@@ -50,9 +50,21 @@ class Mjerenje:
         self.radna_energija = 0.0
         
         
-    def getIznos():
-        return self.brojilo
+    def getRadna_snaga():
+        return self.radna_snaga
 
+    def getJalova_snaga():
+        return self.jalova_snaga
+
+    def getStruja():
+        return self.struja
+
+    def getFrekvencija():
+        return self.frekvencija
+
+    def getRadna_energija():
+        return self.radna_energija
+    
 class Zastita():
     def __init__(self, stanje):
         self.stanje = stanje
