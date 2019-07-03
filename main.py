@@ -43,8 +43,13 @@ class Rastavljac:
 
 class Mjerenje:
     def __init__(self):
-        self.brojilo = 0.0
-
+        self.radna_snaga = 0.0
+        self.jalova_snaga = 0.0
+        self.struja = 0.0
+        self.frekvencija = 0.0
+        self.radna_energija = 0.0
+        
+        
     def getIznos():
         return self.brojilo
 
@@ -128,7 +133,18 @@ class DPPolje(Polje):
         self.rastavljacSab1 = rastavljacSab1
         self.rastavljacSab2 = rastavljacSab2
 
+class Napajanje() :
+    def __init__(self):
+        self.snaga: 0.0
+        self.napon: 0.0
 
+    def ukljuci_napajanje(self):
+        self.snaga: 100
+        self.napon: 100
+
+    def iskljuci_napajanje(self):
+        self.snaga: 0.0
+        self.napon: 0.0
 
 master = Tk()
 master.title("Karlo")
