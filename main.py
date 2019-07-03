@@ -149,9 +149,9 @@ class Napajanje() :
         self.snaga: 0.0
         self.napon: 0.0
 
-    def ukljuci_napajanje(self):
-        self.snaga: 100
-        self.napon: 100
+    def ukljuci_napajanje(self, snaga, napon):
+        self.snaga: snaga
+        self.napon: napon
 
     def iskljuci_napajanje(self):
         self.snaga: 0.0
