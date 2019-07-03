@@ -41,7 +41,7 @@ class Rastavljac:
     def ukljuci(self):
         self.stanje = "ukljucen"
 
-class Mjerenje:
+class Mjerenja:
     def __init__(self):
         self.radna_snaga = 0.0
         self.jalova_snaga = 0.0
@@ -160,7 +160,7 @@ class SPPolje(Polje):
             return
 
 class DPPolje(Polje):
-    def __init__(self, naponski_nivo, naziv, stanje, prekidac, rastavljacSab1, rastavljacSab2, rastavljacUzemljenja, rastavljacIzlazni, NadstrujnaZastita, DistantnaZastita, APU, Mjerenje):
+    def __init__(self, naponski_nivo, naziv, stanje, prekidac, rastavljacSab1, rastavljacSab2, rastavljacUzemljenja, rastavljacIzlazni, NadstrujnaZastita, DistantnaZastita, APU, Mjerenja):
         Polje.__init__(self, naponski_nivo, naziv, stanje)
         self.prekidac = prekidac
         self.rastavljacSab1 = rastavljacSab1
@@ -170,7 +170,36 @@ class DPPolje(Polje):
         self.NadstrujnaZastita = NadstrujnaZastita
         self.DistantnaZastita = DistantnaZastita
         self.APU = APU
-        self.Mjerenje = Mjerenje
+        self.Mjerenja = Mjerenja
+
+    def ukljuci_iskljuci(self):
+        if(self.prekidac.odrediStanje() == 'iskljucen' and self.rastavljacSab1.odrediStanje() == 'iskljucen' and self.rastavljacSab2.odrediStanje() == 'iskljucen'):
+            self.rastavljacSab1.ukljuci()
+            self.rastavljacSab2.ukljuci()
+            self.prekidac.ukljuci()
+            self.stanje = 'ukljucen'
+            can.itemconfigure(s1_path, fill = 'green')
+            can.itemconfigure(s2_path, fill = 'green')
+            can.itemconfigure(s1_con, fill = 'green')
+            can.itemconfigure(d_rastavljac1, fill = 'green')
+            can.itemconfigure(d_rastavljac2, fill = 'green')
+            can.itemconfigure(d_prekidac, fill = 'green')
+            can.itemconfigure(d_uzemljenje, fill = 'green')
+            can.itemconfigure(d_izlazni, fill = 'green')
+        else:
+            self.rastavljacSab1.iskljuci()
+            self.rastavljacSab2.iskljuci()
+            self.prekidac.iskljuci()
+            self.stanje = 'iskljucen'
+            can.itemconfigure(s1_path, fill = 'red')
+            can.itemconfigure(s2_path, fill = 'red')
+            can.itemconfigure(s1_con2, fill = 'red')
+            can.itemconfigure(d_rastavljac1, fill = 'black')
+            can.itemconfigure(d_rastavljac2, fill = 'black')
+            can.itemconfigure(d_prekidac, fill = 'black')
+            can.itemconfigure(d_uzemljenje, fill = 'black')
+            can.itemconfigure(d_izlazni, fill = 'black')
+            return
         
 class Napajanje() :
     def __init__(self):
@@ -186,7 +215,7 @@ class Napajanje() :
         self.napon: 0.0
 
 SpojnoPolje = SPPolje(110, "Spojno Polje", "iskljucen", Prekidac("iskljucen"), Rastavljac("iskljucen"), Rastavljac("iskljucen"))
-
+DalekovodnoPolje = DPPolje(110, "Dalekovodno Polje", "iskljucen", Prekidac("iskljucen"), Rastavljac("iskljucen"), Rastavljac("iskljucen"), Rastavljac("iskljucen"), Rastavljac("iskljucen"), NadstrujnaZastita("iskljucen"), DistantnaZastita("iskljucen"), APU("iskljucen"), Mjerenja())
 
 master = Tk()
 master.title("Karlo")
@@ -362,7 +391,7 @@ kontrola_gumb = Button(master, text = "Lokalno upravljanje")
 kontrola_gumb.pack()
 kontrola_gumb.place(x = 100, y = 800)
 
-dal_gumb = Button(master, text = "Iskljuci", width = 10)
+dal_gumb = Button(master, text = "Iskljuci", command = DalekovodnoPolje.ukljuci_iskljuci, width = 10)
 dal_gumb.pack()
 dal_gumb.place(x = 300, y = 700)
 
