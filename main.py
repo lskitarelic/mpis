@@ -160,8 +160,9 @@ class SPPolje(Polje):
             return
 
 class DPPolje(Polje):
-    def __init__(self, naponski_nivo, naziv, stanje, prekidac, rastavljacSab1, rastavljacSab2, rastavljacUzemljenja, rastavljacIzlazni, NadstrujnaZastita, DistantnaZastita, APU, Mjerenja):
+    def __init__(self, naponski_nivo, naziv, stanje, sabirnica, prekidac, rastavljacSab1, rastavljacSab2, rastavljacUzemljenja, rastavljacIzlazni, NadstrujnaZastita, DistantnaZastita, APU, Mjerenja):
         Polje.__init__(self, naponski_nivo, naziv, stanje)
+        self.sabirnica = sabirnica
         self.prekidac = prekidac
         self.rastavljacSab1 = rastavljacSab1
         self.rastavljacSab2 = rastavljacSab2
@@ -172,8 +173,10 @@ class DPPolje(Polje):
         self.APU = APU
         self.Mjerenja = Mjerenja
 
-    def ukljuci_iskljuci(self):
-        if(self.prekidac.odrediStanje() == 'iskljucen' and self.rastavljacSab1.odrediStanje() == 'iskljucen' and self.rastavljacSab2.odrediStanje() == 'iskljucen'):
+
+
+    def ukljuci_iskljuciS1(self):
+        if(self.prekidac.odrediStanje() == 'iskljucen' and self.rastavljacSab1.odrediStanje() == 'iskljucen' and self.rastavljacUzemljenja.odrediStanje() == 'ukljucen' and self.rastavljacIzlazni.odrediStanje() == 'iskljucen'):
             self.rastavljacUzemljenja.iskljuci()
             self.rastavljacSab1.ukljuci()
             self.rastavljacIzlazni.ukljuci()
@@ -199,8 +202,56 @@ class DPPolje(Polje):
             can.itemconfigure(d_uzemljenje, fill = 'green')
             can.itemconfigure(d_izlazni, fill = 'black')
             can.itemconfigure(main_path, fill = 'red')
+        return
+    def ukljuci_iskljuciS2(self):
+        if(self.prekidac.odrediStanje() == 'iskljucen' and self.rastavljacSab2.odrediStanje() == 'iskljucen' and self.rastavljacUzemljenja.odrediStanje() == 'ukljucen' and self.rastavljacIzlazni.odrediStanje() == 'iskljucen'):
+            self.rastavljacUzemljenja.iskljuci()
+            self.rastavljacSab2.ukljuci()
+            self.rastavljacIzlazni.ukljuci()
+            self.prekidac.ukljuci()
+            self.stanje = 'ukljucen'
+            can.itemconfigure(s2_path, fill = 'green')
+            can.itemconfigure(d_rastavljac2, fill = 'green')
+            can.itemconfigure(d_prekidac, fill = 'green')
+            can.itemconfigure(d_uzemljenje, fill = 'red')
+            can.itemconfigure(d_izlazni, fill = 'green')
+            can.itemconfigure(main_path, fill = 'green')
+        else:
+            self.prekidac.iskljuci()
+            self.rastavljacSab2.iskljuci()
+            self.rastavljacIzlazni.iskljuci()
+            self.rastavljacUzemljenja.ukljuci()
+            self.stanje = 'iskljucen'
+            can.itemconfigure(s2_path, fill = 'red')
+            can.itemconfigure(d_rastavljac2, fill = 'black')
+            can.itemconfigure(d_prekidac, fill = 'black')
+            can.itemconfigure(d_uzemljenje, fill = 'green')
+            can.itemconfigure(d_izlazni, fill = 'black')
+            can.itemconfigure(main_path, fill = 'red')
+        return
+    def kojaSab(self):
+        if(self.sabirnica == 'S1'):
+            self.ukljuci_iskljuciS1()
+        else:
+            self.ukljuci_iskljuciS2()
+
+    def prebaci(self):
+        print(self.rastavljacSab1.stanje)
+        print(self.rastavljacSab2.stanje)
+        if (self.odrediStanje() == 'iskljucen'):
             return
-        
+        if (self.sabirnica == 'S1'):
+            self.ukljuci_iskljuciS1()
+            self.ukljuci_iskljuciS2()
+            self.sabirnica = 'S2'
+        else:
+            self.ukljuci_iskljuciS2()      
+            self.ukljuci_iskljuciS1()
+            self.sabirnica = 'S1'
+
+        print(self.rastavljacSab1.stanje)
+        print(self.rastavljacSab2.stanje)
+
 class Napajanje() :
     def __init__(self):
         self.snaga: 0.0
@@ -215,7 +266,7 @@ class Napajanje() :
         self.napon: 0.0
 
 SpojnoPolje = SPPolje(110, "Spojno Polje", "iskljucen", Prekidac("iskljucen"), Rastavljac("iskljucen"), Rastavljac("iskljucen"))
-DalekovodnoPolje = DPPolje(110, "Dalekovodno Polje", "ukljucen", Prekidac("ukljucen"), Rastavljac("ukljucen"), Rastavljac("iskljucen"), Rastavljac("ukljucen"), Rastavljac("iskljucen"), NadstrujnaZastita("iskljucen"), DistantnaZastita("iskljucen"), APU("iskljucen"), Mjerenja())
+DalekovodnoPolje = DPPolje(110, "Dalekovodno Polje", "ukljucen", "S1",Prekidac("ukljucen"), Rastavljac("ukljucen"), Rastavljac("iskljucen"), Rastavljac("iskljucen"), Rastavljac("ukljucen"), NadstrujnaZastita("iskljucen"), DistantnaZastita("iskljucen"), APU("iskljucen"), Mjerenja())
 
 master = Tk()
 master.title("Karlo")
@@ -391,11 +442,11 @@ kontrola_gumb = Button(master, text = "Lokalno upravljanje")
 kontrola_gumb.pack()
 kontrola_gumb.place(x = 100, y = 800)
 
-dal_gumb = Button(master, text = "Iskljuci", command = DalekovodnoPolje.ukljuci_iskljuci, width = 10)
+dal_gumb = Button(master, text = "Iskljuci", command = DalekovodnoPolje.kojaSab, width = 10)
 dal_gumb.pack()
 dal_gumb.place(x = 300, y = 700)
 
-prebaci_gumb = Button(master, text = "Prebaci", width = 10)
+prebaci_gumb = Button(master, text = "Prebaci", command = DalekovodnoPolje.prebaci,width = 10)
 prebaci_gumb.pack()
 prebaci_gumb.place(x = 450, y = 700)
 
