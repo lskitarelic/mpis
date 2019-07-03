@@ -174,31 +174,31 @@ class DPPolje(Polje):
 
     def ukljuci_iskljuci(self):
         if(self.prekidac.odrediStanje() == 'iskljucen' and self.rastavljacSab1.odrediStanje() == 'iskljucen' and self.rastavljacSab2.odrediStanje() == 'iskljucen'):
+            self.rastavljacUzemljenja.iskljuci()
             self.rastavljacSab1.ukljuci()
-            self.rastavljacSab2.ukljuci()
+            self.rastavljacIzlazni.ukljuci()
             self.prekidac.ukljuci()
             self.stanje = 'ukljucen'
             can.itemconfigure(s1_path, fill = 'green')
-            can.itemconfigure(s2_path, fill = 'green')
             can.itemconfigure(s1_con, fill = 'green')
             can.itemconfigure(d_rastavljac1, fill = 'green')
-            can.itemconfigure(d_rastavljac2, fill = 'green')
             can.itemconfigure(d_prekidac, fill = 'green')
-            can.itemconfigure(d_uzemljenje, fill = 'green')
+            can.itemconfigure(d_uzemljenje, fill = 'red')
             can.itemconfigure(d_izlazni, fill = 'green')
+            can.itemconfigure(main_path, fill = 'green')
         else:
-            self.rastavljacSab1.iskljuci()
-            self.rastavljacSab2.iskljuci()
             self.prekidac.iskljuci()
+            self.rastavljacSab1.iskljuci()
+            self.rastavljacIzlazni.iskljuci()
+            self.rastavljacUzemljenja.ukljuci()
             self.stanje = 'iskljucen'
             can.itemconfigure(s1_path, fill = 'red')
-            can.itemconfigure(s2_path, fill = 'red')
-            can.itemconfigure(s1_con2, fill = 'red')
+            can.itemconfigure(s1_con, fill = 'red')
             can.itemconfigure(d_rastavljac1, fill = 'black')
-            can.itemconfigure(d_rastavljac2, fill = 'black')
             can.itemconfigure(d_prekidac, fill = 'black')
-            can.itemconfigure(d_uzemljenje, fill = 'black')
+            can.itemconfigure(d_uzemljenje, fill = 'green')
             can.itemconfigure(d_izlazni, fill = 'black')
+            can.itemconfigure(main_path, fill = 'red')
             return
         
 class Napajanje() :
@@ -215,7 +215,7 @@ class Napajanje() :
         self.napon: 0.0
 
 SpojnoPolje = SPPolje(110, "Spojno Polje", "iskljucen", Prekidac("iskljucen"), Rastavljac("iskljucen"), Rastavljac("iskljucen"))
-DalekovodnoPolje = DPPolje(110, "Dalekovodno Polje", "iskljucen", Prekidac("iskljucen"), Rastavljac("iskljucen"), Rastavljac("iskljucen"), Rastavljac("iskljucen"), Rastavljac("iskljucen"), NadstrujnaZastita("iskljucen"), DistantnaZastita("iskljucen"), APU("iskljucen"), Mjerenja())
+DalekovodnoPolje = DPPolje(110, "Dalekovodno Polje", "ukljucen", Prekidac("ukljucen"), Rastavljac("ukljucen"), Rastavljac("iskljucen"), Rastavljac("ukljucen"), Rastavljac("iskljucen"), NadstrujnaZastita("iskljucen"), DistantnaZastita("iskljucen"), APU("iskljucen"), Mjerenja())
 
 master = Tk()
 master.title("Karlo")
@@ -237,11 +237,11 @@ s1_path = can.create_polygon(s1_path_points, fill = 'green')
 s2_path_points = [420, 101, 420, 230, 271, 230, 271, 250, 440, 250, 440, 101]
 s2_path = can.create_polygon(s2_path_points, fill = 'red')
 
-d_rastavljac1 = can.create_rectangle(80, 150, 140, 170, fill = 'black')
+d_rastavljac1 = can.create_rectangle(80, 150, 140, 170, fill = 'green')
 d_rastavljac2 = can.create_rectangle(400, 150, 460, 170, fill = 'black')
-d_izlazni = can.create_rectangle(230, 480, 290, 500, fill = 'black')
+d_izlazni = can.create_rectangle(230, 480, 290, 500, fill = 'green')
 d_uzemljenje = can.create_rectangle(150, 560, 170, 620, fill = 'black')
-d_prekidac = can.create_rectangle(230, 300, 290, 360, fill = 'black')
+d_prekidac = can.create_rectangle(230, 300, 290, 360, fill = 'green')
 
 #Spojno
 
