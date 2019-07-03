@@ -48,21 +48,20 @@ class Mjerenje:
         self.struja = 0.0
         self.frekvencija = 0.0
         self.radna_energija = 0.0
-        
-        
-    def getRadna_snaga():
+           
+    def getRadna_snaga(self):
         return self.radna_snaga
 
-    def getJalova_snaga():
+    def getJalova_snaga(self):
         return self.jalova_snaga
 
-    def getStruja():
+    def getStruja(self):
         return self.struja
 
-    def getFrekvencija():
+    def getFrekvencija(self):
         return self.frekvencija
 
-    def getRadna_energija():
+    def getRadna_energija(self):
         return self.radna_energija
     
 class Zastita():
@@ -139,18 +138,11 @@ class SPPolje(Polje):
         self.rastavljacSab2 = rastavljacSab2
 
 class DPPolje(Polje):
-    def __init__(self, naponski_nivo, naziv, stanje, prekidac, rastavljacSab1, rastavljacSab2, rastavljacUzemljenja, rastavljacIzlazni, NadstrujnaZastita, DistantnaZastita, APU, Mjerenje):
+    def __init__(self, naponski_nivo, naziv, stanje, prekidac, rastavljacSab1, rastavljacSab2):
         Polje.__init__(self, naponski_nivo, naziv, stanje)
         self.prekidac = prekidac
         self.rastavljacSab1 = rastavljacSab1
         self.rastavljacSab2 = rastavljacSab2
-        self.rastavljacUzemljenja = rastavljacUzemljenja
-        self.rastavljacIzlazni = rastavljacIzlazni
-        self.NadstrujnaZastita = NadstrujnaZastita
-        self.DistantnaZastita = DistantnaZastita
-        self.APU = APU
-        self.Mjerenje = Mjerenje
-
 
 class Napajanje() :
     def __init__(self):
