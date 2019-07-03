@@ -23,10 +23,10 @@ class Prekidac:
         return self.stanje
 
     def iskljuci(self):
-        self.stanje = "iskljucen"
+        self.stanje = False
 
     def ukljuci(self):
-        self.stanje = "ukljucen"
+        self.stanje = True
 
 class Rastavljac:
     def __init__(self, stanje):
@@ -36,10 +36,10 @@ class Rastavljac:
         return self.stanje
 
     def iskljuci(self):
-        self.stanje = "iskljucen"
+        self.stanje = False
 
     def ukljuci(self):
-        self.stanje = "ukljucen"
+        self.stanje = True
 
 class Mjerenja:
     def __init__(self):
@@ -72,10 +72,10 @@ class Zastita():
         return self.stanje
 
     def iskljuci(self):
-        self.stanje = "iskljucen"
+        self.stanje = False
 
     def ukljuci(self):
-        self.stanje = "ukljucen"    
+        self.stanje = True   
 
 class DistantnaZastita(Zastita):
     def __init__(self, stanje):
@@ -110,10 +110,10 @@ class APU:
         return self.stanje
 
     def iskljuci(self):
-        self.stanje = "iskljucen"
+        self.stanje = False
 
     def ukljuci(self):
-        self.stanje = "ukljucen"    
+        self.stanje = True   
 
 class Polje:
     def __init__(self,naponski_nivo, naziv, stanje):
@@ -135,11 +135,11 @@ class SPPolje(Polje):
         self.rastavljacSab2 = rastavljacSab2
 
     def ukljuci_iskljuci(self):
-        if(self.prekidac.odrediStanje() == 'iskljucen' and self.rastavljacSab1.odrediStanje() == 'iskljucen' and self.rastavljacSab2.odrediStanje() == 'iskljucen'):
+        if(self.prekidac.odrediStanje() == False and self.rastavljacSab1.odrediStanje() == False and self.rastavljacSab2.odrediStanje() == False):
             self.rastavljacSab1.ukljuci()
             self.rastavljacSab2.ukljuci()
             self.prekidac.ukljuci()
-            self.stanje = 'ukljucen'
+            self.stanje = True
             can.itemconfigure(s1_path2, fill = 'green')
             can.itemconfigure(s2_path2, fill = 'green')
             can.itemconfigure(s1_con2, fill = 'green')
@@ -150,7 +150,7 @@ class SPPolje(Polje):
             self.rastavljacSab1.iskljuci()
             self.rastavljacSab2.iskljuci()
             self.prekidac.iskljuci()
-            self.stanje = 'iskljucen'
+            self.stanje = False
             can.itemconfigure(s1_path2, fill = 'red')
             can.itemconfigure(s2_path2, fill = 'red')
             can.itemconfigure(s1_con2, fill = 'red')
@@ -176,12 +176,12 @@ class DPPolje(Polje):
 
 
     def ukljuci_iskljuciS1(self):
-        if(self.prekidac.odrediStanje() == 'iskljucen' and self.rastavljacSab1.odrediStanje() == 'iskljucen' and self.rastavljacUzemljenja.odrediStanje() == 'ukljucen' and self.rastavljacIzlazni.odrediStanje() == 'iskljucen'):
+        if(self.prekidac.odrediStanje() == False and self.rastavljacSab1.odrediStanje() == False and self.rastavljacUzemljenja.odrediStanje() == True and self.rastavljacIzlazni.odrediStanje() == False):
             self.rastavljacUzemljenja.iskljuci()
             self.rastavljacSab1.ukljuci()
             self.rastavljacIzlazni.ukljuci()
             self.prekidac.ukljuci()
-            self.stanje = 'ukljucen'
+            self.stanje = True
             can.itemconfigure(s1_path, fill = 'green')
             can.itemconfigure(s1_con, fill = 'green')
             can.itemconfigure(d_rastavljac1, fill = 'green')
@@ -194,7 +194,7 @@ class DPPolje(Polje):
             self.rastavljacSab1.iskljuci()
             self.rastavljacIzlazni.iskljuci()
             self.rastavljacUzemljenja.ukljuci()
-            self.stanje = 'iskljucen'
+            self.stanje = False
             can.itemconfigure(s1_path, fill = 'red')
             can.itemconfigure(s1_con, fill = 'red')
             can.itemconfigure(d_rastavljac1, fill = 'black')
@@ -204,12 +204,12 @@ class DPPolje(Polje):
             can.itemconfigure(main_path, fill = 'red')
         return
     def ukljuci_iskljuciS2(self):
-        if(self.prekidac.odrediStanje() == 'iskljucen' and self.rastavljacSab2.odrediStanje() == 'iskljucen' and self.rastavljacUzemljenja.odrediStanje() == 'ukljucen' and self.rastavljacIzlazni.odrediStanje() == 'iskljucen'):
+        if(self.prekidac.odrediStanje() == False and self.rastavljacSab2.odrediStanje() == False and self.rastavljacUzemljenja.odrediStanje() == True and self.rastavljacIzlazni.odrediStanje() == False):
             self.rastavljacUzemljenja.iskljuci()
             self.rastavljacSab2.ukljuci()
             self.rastavljacIzlazni.ukljuci()
             self.prekidac.ukljuci()
-            self.stanje = 'ukljucen'
+            self.stanje = True
             can.itemconfigure(s2_path, fill = 'green')
             can.itemconfigure(d_rastavljac2, fill = 'green')
             can.itemconfigure(d_prekidac, fill = 'green')
@@ -221,7 +221,7 @@ class DPPolje(Polje):
             self.rastavljacSab2.iskljuci()
             self.rastavljacIzlazni.iskljuci()
             self.rastavljacUzemljenja.ukljuci()
-            self.stanje = 'iskljucen'
+            self.stanje = False
             can.itemconfigure(s2_path, fill = 'red')
             can.itemconfigure(d_rastavljac2, fill = 'black')
             can.itemconfigure(d_prekidac, fill = 'black')
@@ -236,7 +236,7 @@ class DPPolje(Polje):
             self.ukljuci_iskljuciS2()
 
     def prebaci(self):
-        if (self.odrediStanje() == 'iskljucen'):
+        if (self.odrediStanje() == False ):
             return
         if (self.sabirnica == 'S1'):
             self.ukljuci_iskljuciS1()
@@ -260,8 +260,8 @@ class Napajanje() :
         self.snaga: 0.0
         self.napon: 0.0
 
-SpojnoPolje = SPPolje(110, "Spojno Polje", "iskljucen", Prekidac("iskljucen"), Rastavljac("iskljucen"), Rastavljac("iskljucen"))
-DalekovodnoPolje = DPPolje(110, "Dalekovodno Polje", "ukljucen", "S1",Prekidac("ukljucen"), Rastavljac("ukljucen"), Rastavljac("iskljucen"), Rastavljac("iskljucen"), Rastavljac("ukljucen"), NadstrujnaZastita("iskljucen"), DistantnaZastita("iskljucen"), APU("iskljucen"), Mjerenja())
+SpojnoPolje = SPPolje(110, "Spojno Polje", False, Prekidac(False), Rastavljac(False), Rastavljac(False))
+DalekovodnoPolje = DPPolje(110, "Dalekovodno Polje", True, "S1",Prekidac(True), Rastavljac(True), Rastavljac(False), Rastavljac(False), Rastavljac(True), NadstrujnaZastita(False), DistantnaZastita(False), APU(False), Mjerenja())
 
 master = Tk()
 master.title("Karlo")
