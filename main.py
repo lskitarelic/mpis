@@ -146,6 +146,17 @@ class SPPolje(Polje):
             can.itemconfigure(s_rastavljac1, fill = 'green')
             can.itemconfigure(s_rastavljac2, fill = 'green')
             can.itemconfigure(s_prekidac, fill = 'green')
+        else:
+            self.rastavljacSab1.iskljuci()
+            self.rastavljacSab2.iskljuci()
+            self.prekidac.iskljuci()
+            self.stanje = 'iskljucen'
+            can.itemconfigure(s1_path2, fill = 'red')
+            can.itemconfigure(s2_path2, fill = 'red')
+            can.itemconfigure(s1_con2, fill = 'red')
+            can.itemconfigure(s_rastavljac1, fill = 'black')
+            can.itemconfigure(s_rastavljac2, fill = 'black')
+            can.itemconfigure(s_prekidac, fill = 'black')
             return
 
 class DPPolje(Polje):
