@@ -42,28 +42,12 @@ class Rastavljac:
         self.stanje = True
 
 class Mjerenja:
-    def __init__(self):
-        self.radna_snaga = 0.0
-        self.jalova_snaga = 0.0
-        self.struja = 0.0
-        self.frekvencija = 0.0
-        self.radna_energija = 0.0
+    def __init__(self, vrijednost):
+        self.vrijednost = vrijednost
            
-    def getRadna_snaga(self):
-        return self.radna_snaga
+    def getVrijednost(self):
+        return self.vrijednost
 
-    def getJalova_snaga(self):
-        return self.jalova_snaga
-
-    def getStruja(self):
-        return self.struja
-
-    def getFrekvencija(self):
-        return self.frekvencija
-
-    def getRadna_energija(self):
-        return self.radna_energija
-    
 class Zastita():
     def __init__(self, stanje):
         self.stanje = stanje
@@ -102,8 +86,8 @@ class NadstrujnaZastita(Zastita):
 class APU:
     def __init__(self, stanje):
         self.stanje = stanje
-        self.APU_1p = False
-        self.APU_3p = False
+        self.APU_1p = True
+        self.APU_3p = True
         self.blokada = False
 
     def odrediStanje(self):
@@ -126,6 +110,8 @@ class Polje:
 
     def iskljuci_iskljuci(self):
         pass
+
+
 
 class SPPolje(Polje):
     def __init__(self, naponski_nivo, naziv, stanje, prekidac, rastavljacSab1, rastavljacSab2):
@@ -249,19 +235,19 @@ class DPPolje(Polje):
 
 class Napajanje() :
     def __init__(self):
-        self.snaga: 0.0
-        self.napon: 0.0
+        self.snaga = 0.0
+        self.napon = 0.0
 
     def ukljuci_napajanje(self, snaga, napon):
-        self.snaga: snaga
-        self.napon: napon
+        self.snaga = snaga
+        self.napon = napon
 
     def iskljuci_napajanje(self):
-        self.snaga: 0.0
-        self.napon: 0.0
+        self.snaga = 0.0
+        self.napon = 0.0
 
 SpojnoPolje = SPPolje(110, "Spojno Polje", False, Prekidac(False), Rastavljac(False), Rastavljac(False))
-DalekovodnoPolje = DPPolje(110, "Dalekovodno Polje", True, "S1",Prekidac(True), Rastavljac(True), Rastavljac(False), Rastavljac(False), Rastavljac(True), NadstrujnaZastita(False), DistantnaZastita(False), APU(False), Mjerenja())
+DalekovodnoPolje = DPPolje(110, "Dalekovodno Polje", True, "S1",Prekidac(True), Rastavljac(True), Rastavljac(False), Rastavljac(False), Rastavljac(True), NadstrujnaZastita(False), DistantnaZastita(False), APU(False), Mjerenja(0.0))
 
 master = Tk()
 master.title("Karlo")
@@ -455,10 +441,13 @@ text = Text(master, width = 85, height = 45, state = DISABLED, bg = 'gray')
 text.pack()
 text.place(x = 1100, y = 0)
 
-commandline = Entry(master, width = 85, bg = 'gray')
+commandline = Entry(master, width = 75, bg = 'gray')
 commandline.pack()
 commandline.place(x = 1100, y = 800)
 
+command_gumb = Button(master, text = "Enter", width = 6)
+command_gumb.pack()
+command_gumb.place(x = 1715, y = 795)
 master.mainloop()
 
 
