@@ -186,7 +186,7 @@ class DPPolje(Polje):
             can.itemconfigure(s1_con, fill = 'green')
             can.itemconfigure(d_rastavljac1, fill = 'green')
             can.itemconfigure(d_prekidac, fill = 'green')
-            can.itemconfigure(d_uzemljenje, fill = 'red')
+            can.itemconfigure(d_uzemljenje, fill = 'black')
             can.itemconfigure(d_izlazni, fill = 'green')
             can.itemconfigure(main_path, fill = 'green')
         else:
@@ -213,7 +213,7 @@ class DPPolje(Polje):
             can.itemconfigure(s2_path, fill = 'green')
             can.itemconfigure(d_rastavljac2, fill = 'green')
             can.itemconfigure(d_prekidac, fill = 'green')
-            can.itemconfigure(d_uzemljenje, fill = 'red')
+            can.itemconfigure(d_uzemljenje, fill = 'black')
             can.itemconfigure(d_izlazni, fill = 'green')
             can.itemconfigure(main_path, fill = 'green')
         else:
@@ -236,8 +236,6 @@ class DPPolje(Polje):
             self.ukljuci_iskljuciS2()
 
     def prebaci(self):
-        print(self.rastavljacSab1.stanje)
-        print(self.rastavljacSab2.stanje)
         if (self.odrediStanje() == 'iskljucen'):
             return
         if (self.sabirnica == 'S1'):
@@ -248,9 +246,6 @@ class DPPolje(Polje):
             self.ukljuci_iskljuciS2()      
             self.ukljuci_iskljuciS1()
             self.sabirnica = 'S1'
-
-        print(self.rastavljacSab1.stanje)
-        print(self.rastavljacSab2.stanje)
 
 class Napajanje() :
     def __init__(self):
