@@ -44,7 +44,7 @@ class Rastavljac:
 class Mjerenje:
     def __init__(self):
         self.brojilo = 0.0
-        
+
     def getIznos():
         return self.brojilo
 
@@ -83,10 +83,55 @@ class NadstrujnaZastita(Zastita):
         self.od_preopterećenja_iskljucenje = False
         self.relej_kvar = False
 
+class APU:
+    def __init__(self, stanje):
+        self.stanje = stanje
+        self.APU_1p = False
+        self.APU_3p = False
+        self.blokada = False
+
+    def odrediStanje(self):
+        return self.stanje
+
+    def iskljuci(self):
+        self.stanje = "iskljucen"
+
+    def ukljuci(self):
+        self.stanje = "ukljucen"    
+
+class Polje:
+    def __init__(self,naponski_nivo, naziv, stanje):
+        self.stanje = stanje
+        self.naziv = naziv
+        self.naponski_nivo = naponski_nivo
+
+    def odrediStanje(self):
+        return self.stanje
+
+    def iskljuci(self):
+        self.stanje = "iskljucen"
+
+    def ukljuci(self):
+        self.stanje = "ukljucen"
+
+class SPPolje(Polje):
+    def __init__(self, naponski_nivo, naziv, stanje, prekidac, rastavljacSab1, rastavljacSab2):
+        Polje.__init__(self, naponski_nivo, naziv, stanje)
+        self.prekidac = prekidac
+        self.rastavljacSab1 = rastavljacSab1
+        self.rastavljacSab2 = rastavljacSab2
+
+class DPPolje(Polje):
+    def __init__(self, naponski_nivo, naziv, stanje, prekidac, rastavljacSab1, rastavljacSab2):
+        Polje.__init__(self, naponski_nivo, naziv, stanje)
+        self.prekidac = prekidac
+        self.rastavljacSab1 = rastavljacSab1
+        self.rastavljacSab2 = rastavljacSab2
+
 
 
 master = Tk()
-master.title("Elektrana")
+master.title("Karlo")
 master.geometry("1800x900")
 master.resizable(False, False)
 
