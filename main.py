@@ -124,11 +124,8 @@ class Polje:
     def odrediStanje(self):
         return self.stanje
 
-    def iskljuci(self):
-        self.stanje = "iskljucen"
-
-    def ukljuci(self):
-        self.stanje = "ukljucen"
+    def iskljuci_iskljuci(self):
+        pass
 
 class SPPolje(Polje):
     def __init__(self, naponski_nivo, naziv, stanje, prekidac, rastavljacSab1, rastavljacSab2):
@@ -136,6 +133,20 @@ class SPPolje(Polje):
         self.prekidac = prekidac
         self.rastavljacSab1 = rastavljacSab1
         self.rastavljacSab2 = rastavljacSab2
+
+    def ukljuci_iskljuci(self):
+        if(self.prekidac.odrediStanje() == 'iskljucen' and self.rastavljacSab1.odrediStanje() == 'iskljucen' and self.rastavljacSab2.odrediStanje() == 'iskljucen'):
+            self.rastavljacSab1.ukljuci()
+            self.rastavljacSab2.ukljuci()
+            self.prekidac.ukljuci()
+            self.stanje = 'ukljucen'
+            can.itemconfigure(s1_path2, fill = 'green')
+            can.itemconfigure(s2_path2, fill = 'green')
+            can.itemconfigure(s1_con2, fill = 'green')
+            can.itemconfigure(s_rastavljac1, fill = 'green')
+            can.itemconfigure(s_rastavljac2, fill = 'green')
+            can.itemconfigure(s_prekidac, fill = 'green')
+            return
 
 class DPPolje(Polje):
     def __init__(self, naponski_nivo, naziv, stanje, prekidac, rastavljacSab1, rastavljacSab2, rastavljacUzemljenja, rastavljacIzlazni, NadstrujnaZastita, DistantnaZastita, APU, Mjerenje):
@@ -162,6 +173,9 @@ class Napajanje() :
     def iskljuci_napajanje(self):
         self.snaga: 0.0
         self.napon: 0.0
+
+SpojnoPolje = SPPolje(110, "Spojno Polje", "iskljucen", Prekidac("iskljucen"), Rastavljac("iskljucen"), Rastavljac("iskljucen"))
+
 
 master = Tk()
 master.title("Karlo")
@@ -345,7 +359,7 @@ prebaci_gumb = Button(master, text = "Prebaci", width = 10)
 prebaci_gumb.pack()
 prebaci_gumb.place(x = 450, y = 700)
 
-sp_gumb = Button(master, text = "Iskljuci",width = 10)
+sp_gumb = Button(master, text = "Iskljuci", command = SpojnoPolje.ukljuci_iskljuci,width = 10)
 sp_gumb.pack()
 sp_gumb.place(x = 900, y = 700)
 
