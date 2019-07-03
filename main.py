@@ -44,7 +44,7 @@ class Rastavljac:
 class Mjerenje:
     def __init__(self):
         self.brojilo = 0.0
-
+        
     def getIznos():
         return self.brojilo
 
@@ -86,7 +86,7 @@ class NadstrujnaZastita(Zastita):
 
 
 master = Tk()
-master.title("Karlo")
+master.title("Elektrana")
 master.geometry("1800x900")
 master.resizable(False, False)
 
