@@ -121,6 +121,9 @@ class SPPolje(Polje):
         self.rastavljacSab2 = rastavljacSab2
 
     def ukljuci_iskljuci(self):
+        if (Napajanje.napajanje == False):
+            text.insert(INSERT,  "Upalite napajanje...\n")
+            return
         if(self.prekidac.odrediStanje() == False and self.rastavljacSab1.odrediStanje() == False and self.rastavljacSab2.odrediStanje() == False):
             self.rastavljacSab1.ukljuci()
             self.rastavljacSab2.ukljuci()
@@ -175,6 +178,10 @@ class DPPolje(Polje):
             can.itemconfigure(d_uzemljenje, fill = 'black')
             can.itemconfigure(d_izlazni, fill = 'green')
             can.itemconfigure(main_path, fill = 'green')
+            can.itemconfigure(path, fill = 'red')
+            can.itemconfigure(box1, fill = 'red')
+            can.itemconfigure(box2, fill = 'red')
+            can.itemconfigure(box3, fill = 'red')
         else:
             self.prekidac.iskljuci()
             self.rastavljacSab1.iskljuci()
@@ -188,6 +195,10 @@ class DPPolje(Polje):
             can.itemconfigure(d_uzemljenje, fill = 'green')
             can.itemconfigure(d_izlazni, fill = 'black')
             can.itemconfigure(main_path, fill = 'red')
+            can.itemconfigure(path, fill = 'green')
+            can.itemconfigure(box1, fill = 'green')
+            can.itemconfigure(box2, fill = 'green')
+            can.itemconfigure(box3, fill = 'green')
         return
     def ukljuci_iskljuciS2(self):
         if(self.prekidac.odrediStanje() == False and self.rastavljacSab2.odrediStanje() == False and self.rastavljacUzemljenja.odrediStanje() == True and self.rastavljacIzlazni.odrediStanje() == False):
@@ -202,6 +213,10 @@ class DPPolje(Polje):
             can.itemconfigure(d_uzemljenje, fill = 'black')
             can.itemconfigure(d_izlazni, fill = 'green')
             can.itemconfigure(main_path, fill = 'green')
+            can.itemconfigure(path, fill = 'red')
+            can.itemconfigure(box1, fill = 'red')
+            can.itemconfigure(box2, fill = 'red')
+            can.itemconfigure(box3, fill = 'red')
         else:
             self.prekidac.iskljuci()
             self.rastavljacSab2.iskljuci()
@@ -214,15 +229,29 @@ class DPPolje(Polje):
             can.itemconfigure(d_uzemljenje, fill = 'green')
             can.itemconfigure(d_izlazni, fill = 'black')
             can.itemconfigure(main_path, fill = 'red')
+            can.itemconfigure(path, fill = 'green')
+            can.itemconfigure(box1, fill = 'green')
+            can.itemconfigure(box2, fill = 'green')
+            can.itemconfigure(box3, fill = 'green')
         return
     def kojaSab(self):
+        if (Napajanje.napajanje == False):
+            text.insert(INSERT,  "Upalite napajanje...\n")
+            return
         if(self.sabirnica == 'S1'):
             self.ukljuci_iskljuciS1()
         else:
             self.ukljuci_iskljuciS2()
 
     def prebaci(self):
-        if (self.odrediStanje() == False ):
+        if (Napajanje.napajanje == False):
+            text.insert(INSERT,  "Upalite napajanje...\n")
+            return
+        if (self.odrediStanje() == False):
+            text.insert(INSERT, "Upalite dalekovodno polje...\n")
+            return
+        if (SpojnoPolje.odrediStanje() == False):
+            text.insert(INSERT,  "Upalite spojno polje...\n")
             return
         if (self.sabirnica == 'S1'):
             self.ukljuci_iskljuciS1()
@@ -233,24 +262,34 @@ class DPPolje(Polje):
             self.ukljuci_iskljuciS1()
             self.sabirnica = 'S1'
 
+
 class Napajanje() :
     def __init__(self):
-        self.snaga = 0.0
-        self.napon = 0.0
+        self.napajanje = True
 
-    def ukljuci_napajanje(self, snaga, napon):
-        self.snaga = snaga
-        self.napon = napon
-
+    def ukljuci_napajanje(self):
+        self.napajanje = True
     def iskljuci_napajanje(self):
-        self.snaga = 0.0
-        self.napon = 0.0
+        self.napajanje = False
 
+    def postaviNapajanje(self):
+        if (CheckVar3.get() == 0):
+            self.ukljuci_napajanje()
+            text.insert(INSERT,  "Ukljucujem napajanje...\n")
+        else:
+            if (DalekovodnoPolje.odrediStanje() == True):
+                DalekovodnoPolje.kojaSab()
+            if (SpojnoPolje.odrediStanje() == True):
+                SpojnoPolje.ukljuci_iskljuci()
+            self.iskljuci_napajanje()
+            text.insert(INSERT,  "Iskljucujem napajanje...\n")
+
+    
 SpojnoPolje = SPPolje(110, "Spojno Polje", False, Prekidac(False), Rastavljac(False), Rastavljac(False))
 DalekovodnoPolje = DPPolje(110, "Dalekovodno Polje", True, "S1",Prekidac(True), Rastavljac(True), Rastavljac(False), Rastavljac(False), Rastavljac(True), NadstrujnaZastita(False), DistantnaZastita(False), APU(False), Mjerenja(0.0))
-
+Napajanje = Napajanje();
 master = Tk()
-master.title("Karlo")
+master.title("Elektrana")
 master.geometry("1800x900")
 master.resizable(False, False)
 
@@ -372,7 +411,7 @@ napajanje_label.pack()
 napajanje_label.place(x = 600, y = 780)
 
 CheckVar3 = IntVar()
-c3 = Checkbutton(master, text = "Prorada", variable = CheckVar3, onvalue = 1, offvalue = 0, height=1, width = 6)
+c3 = Checkbutton(master, text = "On/OFF", variable = CheckVar3, onvalue = 1, offvalue = 0, height=1, width = 6, command = Napajanje.postaviNapajanje)
 c3.pack()
 c3.place(x = 600, y = 800)
 
@@ -419,25 +458,20 @@ spprekidac_label.pack()
 spprekidac_label.place(x = 750, y = 300)
 
 #Gumbici
-kontrola_gumb = Button(master, text = "Lokalno upravljanje")
-kontrola_gumb.pack()
-kontrola_gumb.place(x = 100, y = 800)
 
-dal_gumb = Button(master, text = "Iskljuci", command = DalekovodnoPolje.kojaSab, width = 10)
+dal_gumb = Button(master, text = "On/Off", command = DalekovodnoPolje.kojaSab, width = 10)
 dal_gumb.pack()
 dal_gumb.place(x = 300, y = 700)
-
 prebaci_gumb = Button(master, text = "Prebaci", command = DalekovodnoPolje.prebaci,width = 10)
 prebaci_gumb.pack()
 prebaci_gumb.place(x = 450, y = 700)
 
-sp_gumb = Button(master, text = "Iskljuci", command = SpojnoPolje.ukljuci_iskljuci,width = 10)
+sp_gumb = Button(master, text = "On/Off", command = SpojnoPolje.ukljuci_iskljuci,width = 10)
 sp_gumb.pack()
 sp_gumb.place(x = 900, y = 700)
 
-
 #Terminal
-text = Text(master, width = 85, height = 45, state = DISABLED, bg = 'gray')
+text = Text(master, width = 85, height = 45, bg = 'gray')
 text.pack()
 text.place(x = 1100, y = 0)
 
