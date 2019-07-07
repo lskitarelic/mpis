@@ -8,7 +8,7 @@ def signal(trenutno):
     if (trenutno == True):
         return "prorada"
     else:
-        return "restanak"
+        return "prestanak"
 
 class Prekidac:
     def __init__(self, stanje):
@@ -50,7 +50,25 @@ class Prekidac:
         text.insert(INSERT,"gubitak ulja - blokada rada      prestanak\n")
         text.insert(INSERT,"grijanje - kvar      prorada\n")
         text.insert(INSERT,"grijanje - kvar      prestanak\n\n\n")
-        
+    
+    def ispis(self):
+        if (self.odrediStanje == True):
+            ispis_stanje = "ukljucen"
+        else:
+            ispis_stanje = "iskljucen"
+        text.insert(INSERT, "PREKIDAC\n")
+        text.insert(INSERT, "stanje      " + ispis_stanje + "\n")
+        text.insert(INSERT, "SF6;N2;ulje - blokada rada      " + signal(self.SF6_N2_ulje_blokada_rada) + "\n")
+        text.insert(INSERT, "gubitak N2 - blokada rada      " + signal(self.gubitak_N2_blokada_rada) + "\n")
+        text.insert(INSERT, "gubitak SF6 - upozorenje      " + signal(self.gubitak_SF6_upozorenje) + "\n")
+        text.insert(INSERT, "nesklad polova - 3P isklop      " + signal(self.nesklad_polova_3P_isklop) + "\n")
+        text.insert(INSERT, "gubitak N2 - upozorenje      " + signal(self.gubitak_N2_upozorenje) + "\n")
+        text.insert(INSERT, "gubitak ulje - blokada uklopa      " + signal(self.gubitak_ulja_blokada_rada) + "\n")
+        text.insert(INSERT, "APU - blokada      " + signal(self.APU_blokada) + "\n")
+        text.insert(INSERT, "gubitak SF6 - blokada rada      " + signal(self.gubitak_SF6_blokada_rada) + "\n")
+        text.insert(INSERT, "gubitak ulja - blokada rada      " + signal(self.gubitak_ulja_blokada_rada) + "\n")
+        text.insert(INSERT, "grijanje - kvar      " + signal(self.grijanje_kvar) + "\n\n\n")
+
 
     def odrediStanje(self):
         return self.stanje
@@ -86,7 +104,16 @@ class Rastavljac:
         text.insert(INSERT, "stanje     medupolozaj\n")
         text.insert(INSERT,"stanje     ukljucen\n")
         text.insert(INSERT,"stanje     iskljucen\n")
-        text.insert(INSERT,"stanje     kvar signalizacije\n\n\n")
+        text.insert(INSERT,"stanje     kvar signalizacije\n")
+
+    def ispis(self):
+        if (self.odrediStanje):
+            ispis_stanje = "ukljucen"
+        else:
+            ispis_stanje = "iskljucen"
+        text.insert(INSERT, "PREKIDAC\n")
+        text.insert(INSERT, "stanje      " + ispis_stanje + "\n\n\n")
+
 
 class Mjerenja:
     def __init__(self):
@@ -497,10 +524,86 @@ def ispisListe():
         SpojnoPolje.rastavljacSab1.ispis_svih()
         SpojnoPolje.rastavljacSab2.ispis_svih()
         
-    elif (input == "dvp"):
-        text.insert(INSERT, "Lista signala za dalekovodno polje\n")
-    elif (input == "sp"):
-        text.insert(INSERT, "Lista signala za spojno polje\n")
+    elif (input == "dalekovodno - sve"):
+        text.insert(INSERT, "Lista signala za dalekovodno polje\n\n\n")
+        text.insert(INSERT, "DALEKOVODNO POLJE\n")        
+        DalekovodnoPolje.prekidac.ispis_svih()
+        DalekovodnoPolje.rastavljacSab1.ispis_svih()
+        DalekovodnoPolje.rastavljacSab2.ispis_svih()
+        DalekovodnoPolje.rastavljacIzlazni.ispis_svih()
+        DalekovodnoPolje.rastavljacUzemljenja.ispis_svih()
+        DalekovodnoPolje.DistantnaZastita.ispis_svih()
+        DalekovodnoPolje.NadstrujnaZastita.ispis_svih()
+        DalekovodnoPolje.APU.ispis_svih()
+        DalekovodnoPolje.Mjerenja.ispis_svih()
+    elif (input == "spojno - sve"):
+        text.insert(INSERT, "Lista signala za spojno polje\n\n\n")
+        text.insert(INSERT, "SPOJNO POLJE\n")
+        SpojnoPolje.prekidac.ispis_svih()
+        SpojnoPolje.rastavljacSab1.ispis_svih()
+        SpojnoPolje.rastavljacSab2.ispis_svih()
+    elif (input == "trenutni"):
+        text.insert(INSERT, "Lista trenutnih signala za sve\n\n\n")
+        text.insert(INSERT, "DALEKOVODNO POLJE\n")        
+        DalekovodnoPolje.prekidac.ispis()
+        DalekovodnoPolje.rastavljacSab1.ispis()
+        DalekovodnoPolje.rastavljacSab2.ispis()
+        text.insert(INSERT, "SPOJNO POLJE\n")
+        SpojnoPolje.prekidac.ispis()
+        SpojnoPolje.rastavljacSab1.ispis()
+        SpojnoPolje.rastavljacSab2.ispis()
+    elif (input == "dalekovodno - trenutni"):
+        text.insert(INSERT, "Lista trenutnih signala za dalekovodno polje\n\n\n")
+        text.insert(INSERT, "DALEKOVODNO POLJE\n")        
+        DalekovodnoPolje.prekidac.ispis()
+        DalekovodnoPolje.rastavljacSab1.ispis()
+        DalekovodnoPolje.rastavljacSab2.ispis()
+    elif (input == "spojno - trenutni"):
+        text.insert(INSERT, "Lista trenutnih signala za spojno polje\n\n\n")
+        text.insert(INSERT, "SPOJNO POLJE\n")
+        SpojnoPolje.prekidac.ispis()
+        SpojnoPolje.rastavljacSab1.ispis()
+        SpojnoPolje.rastavljacSab2.ispis()
+    elif (input == "dalekovodno - prekidac - sve"):
+        text.insert(INSERT, "Lista signala za prekidac dalekovodnog polja\n\n\n")
+        text.insert(INSERT, "DALEKOVODNO POLJE\n")        
+        DalekovodnoPolje.prekidac.ispis_svih()
+    elif (input == "dalekovodno - rastavljac - sve"):
+        text.insert(INSERT, "Lista signala za rastavljac dalekovodnog polja\n\n\n")
+        text.insert(INSERT, "DALEKOVODNO POLJE\n")        
+        DalekovodnoPolje.rastavljacSab1.ispis_svih()    
+    elif (input == "dalekovodno - rastavljac1 - trenutni"):
+        text.insert(INSERT, "Lista trenutnih signala za prvi rastavljac dalekovodnog polja\n\n\n")
+        text.insert(INSERT, "DALEKOVODNO POLJE\n")
+        DalekovodnoPolje.rastavljacSab1.ispis()
+    elif (input == "dalekovodno - rastavljac2 - trenutni"):
+        text.insert(INSERT, "Lista trenutnih signala za drugi rastavljac dalekovodnog polja\n\n\n")
+        text.insert(INSERT, "DALEKOVODNO POLJE\n")        
+        DalekovodnoPolje.rastavljacSab2.ispis() 
+    elif (input == "dalekovodno - prekidac - trenutni"):
+        text.insert(INSERT, "Lista trenutnih signala za prekidac dalekovodnog polja\n\n\n")
+        text.insert(INSERT, "DALEKOVODNO POLJE\n")        
+        DalekovodnoPolje.prekidac.ispis()
+    elif (input == "spojno - prekidac - sve"):
+        text.insert(INSERT, "Lista signala za prekidac spojnog polja\n\n\n")
+        text.insert(INSERT, "SPOJNO POLJE\n")        
+        SpojnoPolje.prekidac.ispis_svih()
+    elif (input == "spojno - rastavljac - sve"):
+        text.insert(INSERT, "Lista signala za rastavljac spojno polja\n\n\n")
+        text.insert(INSERT, "SPOJNO POLJE\n")        
+        SpojnoPolje.rastavljacSab1.ispis_svih()    
+    elif (input == "spojno - rastavljac1 - trenutni"):
+        text.insert(INSERT, "Lista trenutnih signala za prvi rastavljac spojnog polja\n\n\n")
+        text.insert(INSERT, "SPOJNO POLJE\n")        
+        SpojnoPolje.rastavljacSab1.ispis()
+    elif (input == "spojno - rastavljac2 - trenutni"):
+        text.insert(INSERT, "Lista trenutnih signala za drugi rastavljac spojnog polja\n\n\n")
+        text.insert(INSERT, "SPOJNO POLJE\n")        
+        SpojnoPolje.rastavljacSab2.ispis() 
+    elif (input == "spojno - prekidac - trenutni"):
+        text.insert(INSERT, "Lista trenutnih signala za prekidac dalekovodnog polja\n\n\n")
+        text.insert(INSERT, "DALEKOVODNO POLJE\n")        
+        SpojnoPolje.prekidac.ispis()
     else:
         text.insert(INSERT, "Kriva ključna riječ\n")
         
