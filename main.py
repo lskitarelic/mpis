@@ -4,6 +4,12 @@ from tkinter import *
 import tkinter
 
 
+def signal(trenutno):
+    if (trenutno == True):
+        return "prorada"
+    else:
+        return "restanak"
+
 class Prekidac:
     def __init__(self, stanje):
         self.stanje = stanje
@@ -18,6 +24,33 @@ class Prekidac:
         self.gubitak_ulja_blokada_rada = False
         self.grijanje_kvar = False
 
+    def ispis_svih(self): 
+        text.insert(INSERT, "PREKIDAC\n")
+        text.insert(INSERT, "stanje     medupolozaj\n")
+        text.insert(INSERT,"stanje     ukljucen\n")
+        text.insert(INSERT,"stanje     iskljucen\n")
+        text.insert(INSERT,"stanje     kvar signalizacije\n")
+        text.insert(INSERT,"SF6;N2;ulje - blokada rada      prorada\n")
+        text.insert(INSERT,"SF6;N2;ulje - blokada rada      prestanak\n")
+        text.insert(INSERT,"gubitak N2 - blokada rada      prorada\n")
+        text.insert(INSERT,"gubitak N2 - blokada rada      prestanak\n")
+        text.insert(INSERT,"gubitak SF6 - upozorenje      prorada\n")
+        text.insert(INSERT,"gubitak SF6 - upozorenje      prestanak\n")
+        text.insert(INSERT,"nesklad polova - 3P isklop      prorada\n")
+        text.insert(INSERT,"nesklad polova - 3P isklop      prestanak\n")
+        text.insert(INSERT,"gubitak N2 - upozorenje      prorada\n")
+        text.insert(INSERT,"gubitak N2 - upozorenje      prestanak\n")
+        text.insert(INSERT,"gubitak ulje - blokada uklopa      prorada\n")
+        text.insert(INSERT,"gubitak ulje - blokada uklopa      prestanak\n")
+        text.insert(INSERT,"APU - blokada      prorada\n")
+        text.insert(INSERT,"APU - blokada      prestanak\n")
+        text.insert(INSERT,"gubitak SF6 - blokada rada      prorada\n")
+        text.insert(INSERT,"gubitak SF6 - blokada rada      prestanak\n")
+        text.insert(INSERT,"gubitak ulja - blokada rada      prorada\n")
+        text.insert(INSERT,"gubitak ulja - blokada rada      prestanak\n")
+        text.insert(INSERT,"grijanje - kvar      prorada\n")
+        text.insert(INSERT,"grijanje - kvar      prestanak\n\n\n")
+        
 
     def odrediStanje(self):
         return self.stanje
@@ -29,6 +62,8 @@ class Prekidac:
     def ukljuci(self):
         text.insert(INSERT,  "Uključujem Prekidač...\n")
         self.stanje = True
+
+
 
 class Rastavljac:
     def __init__(self, stanje, name):
@@ -46,27 +81,44 @@ class Rastavljac:
         text.insert(INSERT,  "Uključujem Rastavljač " + self.name + "...\n")
         self.stanje = True
 
+    def ispis_svih(self):
+        text.insert(INSERT, "RASTAVLJAC\n")
+        text.insert(INSERT, "stanje     medupolozaj\n")
+        text.insert(INSERT,"stanje     ukljucen\n")
+        text.insert(INSERT,"stanje     iskljucen\n")
+        text.insert(INSERT,"stanje     kvar signalizacije\n\n\n")
+
 class Mjerenja:
     def __init__(self):
-        self.U = "10.5 kV"
-        self.Q = "-5.0 MVAr"
-        self.JT = "2500.0 kWh"
+        self.U = "10.5 MW"
+        self.Q = "-5.0 HZ"
+        self.JT = "2500.0 kVArh"
            
     def ukljuci(self):
-        self.U = "10.5 kV"
-        self.Q = "-5.0 MVAr"
-        self.JT = "2500.0 kWh"
+        self.U = "10.5 MW"
+        self.Q = "-5.0 HZ"
+        self.JT = "2500.0 kVArh"
         unos1.insert(INSERT,  self.U)
         unos2.insert(INSERT,  self.Q)
         unos3.insert(INSERT,  self.JT)
     
     def iskljuci(self):
-        self.U = "0.0 kV"
-        self.Q = "0.0 MVAr"
-        self.JT = "2500.0 kWh"
+        self.U = "0.0 MW"
+        self.Q = "0.0 HZ"
+        self.JT = "2500.0 kVArh"
         unos1.insert(INSERT,  self.U)
         unos2.insert(INSERT,  self.Q)
         unos3.insert(INSERT,  self.JT)
+
+    def ispis_svih(self): 
+        text.insert(INSERT, "Mjerenja\n")
+        text.insert(INSERT, "radna snaga (MW)     mjerena vel.\n")
+        text.insert(INSERT, "Frekvencija (Hz)     mjerena vel.\n")
+        text.insert(INSERT, "jalova snaga (kVArh)     mjerena vel.\n")
+        text.insert(INSERT, "alarm     prorada\n")
+        text.insert(INSERT, "alarm     prestanak\n\n\n")
+    
+
 class Zastita():
     def __init__(self, stanje):
         self.stanje = stanje
@@ -112,6 +164,27 @@ class DistantnaZastita(Zastita):
         self.cetvrti_stupanj_isključenje = False
         self.uredaj_kvar = False
 
+    def ispis_svih(self): 
+        text.insert(INSERT, "DISTANTNA ZASTITA\n")
+        text.insert(INSERT, "isključenje     prorada\n")
+        text.insert(INSERT, "isključenje     prestanak\n")
+        text.insert(INSERT, "faza L1 poticaj     prorada\n")
+        text.insert(INSERT, "faza L1 poticaj     prestanak\n")
+        text.insert(INSERT, "faza L2 poticaj     prorada\n")
+        text.insert(INSERT, "faza L2 poticaj     prestanak\n")
+        text.insert(INSERT, "faza L3 poticaj     prorada\n")
+        text.insert(INSERT, "faza L3 poticaj     prestanak\n")
+        text.insert(INSERT, "zemljospoj poticaj     prorada\n")
+        text.insert(INSERT, "zemljospoj poticaj     prestanak\n")
+        text.insert(INSERT, "2.stupanj - isključenje     prorada\n")
+        text.insert(INSERT, "2.stupanj - isključenje     prestanak\n")
+        text.insert(INSERT, "3.stupanj - isključenje     prorada\n")
+        text.insert(INSERT, "3.stupanj - isključenje     prestanak\n")
+        text.insert(INSERT, "4.stupanj - isključenje     prorada\n")
+        text.insert(INSERT, "4.stupanj - isključenje     prestanak\n")
+        text.insert(INSERT, "uređaj - kvar     prorada\n")
+        text.insert(INSERT, "uređaj - kvar     prestanak\n\n\n")
+
 
 
 class NadstrujnaZastita(Zastita):
@@ -123,6 +196,22 @@ class NadstrujnaZastita(Zastita):
         self.od_preopterećenja_upozorenje = False
         self.od_preopterećenja_iskljucenje = False
         self.relej_kvar = False
+
+
+    def ispis_svih(self): 
+        text.insert(INSERT, "NADSTRUJNA ZASTITA\n")
+        text.insert(INSERT, "NPČ - isključenje     prorada\n")
+        text.insert(INSERT, "NPČ - isključenje     prestanak\n")
+        text.insert(INSERT, "VPČ isključenje     prorada\n")
+        text.insert(INSERT, "VPČ isključenje     prestanak\n")
+        text.insert(INSERT, "zemljospojna isključenje     prorada\n")
+        text.insert(INSERT, "zemljospojna isključenje     prestanak\n")
+        text.insert(INSERT, "od preopterećenja upozorenje     prorada\n")
+        text.insert(INSERT, "od preopterećenja upozorenje     prestanak\n")
+        text.insert(INSERT, "od preopterećenja isključenje     prorada\n")
+        text.insert(INSERT, "od preopterećenja isključenje     prestanak\n")
+        text.insert(INSERT, "relej - kvar     prorada\n")
+        text.insert(INSERT, "relej - kvar     prestanak\n\n\n")
 
 
 
@@ -142,8 +231,20 @@ class APU:
 
     def ukljuci(self):
         text.insert(INSERT,  "Uključujem APU...\n")
-        self.stanje = True   
+        self.stanje = True
 
+
+    def ispis_svih(self): 
+        text.insert(INSERT, "APU\n")
+        text.insert(INSERT, "APU uključenje     prorada\n")
+        text.insert(INSERT, "APU uključenje     prestanak\n")
+        text.insert(INSERT, "APU 1p     prorada\n")
+        text.insert(INSERT, "APU 1p     prestanak\n")
+        text.insert(INSERT, "APU 3p     prorada\n")
+        text.insert(INSERT, "APU 3p     prestanak\n")
+        text.insert(INSERT, "APU blokada     prorada\n")
+        text.insert(INSERT, "APU blokada     prestanak\n\n\n")
+        
 class Polje:
     def __init__(self,naponski_nivo, naziv, stanje):
         self.stanje = stanje
@@ -319,6 +420,7 @@ class DPPolje(Polje):
 
 
     def prebaci(self):
+       
         if (Napajanje.napajanje == False):
             text.insert(INSERT,  "Upalite napajanje...\n")
             return
@@ -331,12 +433,18 @@ class DPPolje(Polje):
         if (self.sabirnica == 'S1'):
             text.insert(INSERT, "PREBACUJEM DALEKOVODNO POLJE NA S2...\n")
             self.ukljuci_iskljuciS1()
+            unos1.delete(1.0,END)
+            unos2.delete(1.0,END)
+            unos3.delete(1.0,END)
             self.ukljuci_iskljuciS2()
             self.sabirnica = 'S2'
             text.insert(INSERT, "DALEKOVODNO POLJE PREBAČENO NA S2...\n")
         else:
             text.insert(INSERT, "PREBACUJEM DALEKOVODNO POLJE NA S1...\n")
             self.ukljuci_iskljuciS2()      
+            unos1.delete(1.0,END)
+            unos2.delete(1.0,END)
+            unos3.delete(1.0,END)
             self.ukljuci_iskljuciS1()
             self.sabirnica = 'S1'
             text.insert(INSERT, "DALEKOVODNO POLJE PREBAČENO NA S1...\n")
@@ -373,7 +481,22 @@ def ispisListe():
     input = commandline.get()
     commandline.delete(0, END)
     if (input == "sve"):
-        text.insert(INSERT, "Lista signala za sve\n")
+        text.insert(INSERT, "Lista signala za sve\n\n\n")
+        text.insert(INSERT, "DALEKOVODNO POLJE\n")        
+        DalekovodnoPolje.prekidac.ispis_svih()
+        DalekovodnoPolje.rastavljacSab1.ispis_svih()
+        DalekovodnoPolje.rastavljacSab2.ispis_svih()
+        DalekovodnoPolje.rastavljacIzlazni.ispis_svih()
+        DalekovodnoPolje.rastavljacUzemljenja.ispis_svih()
+        DalekovodnoPolje.DistantnaZastita.ispis_svih()
+        DalekovodnoPolje.NadstrujnaZastita.ispis_svih()
+        DalekovodnoPolje.APU.ispis_svih()
+        DalekovodnoPolje.Mjerenja.ispis_svih()
+        text.insert(INSERT, "SPOJNO POLJE\n")
+        SpojnoPolje.prekidac.ispis_svih()
+        SpojnoPolje.rastavljacSab1.ispis_svih()
+        SpojnoPolje.rastavljacSab2.ispis_svih()
+        
     elif (input == "dvp"):
         text.insert(INSERT, "Lista signala za dalekovodno polje\n")
     elif (input == "sp"):
@@ -390,7 +513,6 @@ master = Tk()
 master.title("Elektrana")
 master.geometry("1800x900")
 master.resizable(False, False)
-
 can = Canvas(master, width = 1800, height = 900)
 
 #Dalekovodno
@@ -519,7 +641,7 @@ prvomjerenje_label = Label(master, text = "Mjerenje")
 prvomjerenje_label.pack()
 prvomjerenje_label.place(x = 750, y = 780)
 
-unos1 = Text(master, width = 9)
+unos1 = Text(master, width = 11, height = 1)
 unos1.insert(END, "10.5 kV")
 unos1.pack()
 unos1.place(x = 750, y = 800)
@@ -529,7 +651,7 @@ drugomjerenje_label = Label(master, text = "Mjerenje")
 drugomjerenje_label.pack()
 drugomjerenje_label.place(x = 850, y = 780)
 
-unos2 = Text(master, width = 9)
+unos2 = Text(master, width = 11, height = 1)
 unos2.insert(END, "-5.0 MVAr")
 unos2.pack()
 unos2.place(x = 850, y = 800)
@@ -538,7 +660,7 @@ trecemjerenje_label = Label(master, text = "Mjerenje")
 trecemjerenje_label.pack()
 trecemjerenje_label.place(x = 950, y = 780)
 
-unos3 = Text(master, width = 10)
+unos3 = Text(master, width = 11, height = 1)
 unos3.insert(END, "2500.0 kWh")
 unos3.pack()
 unos3.place(x = 950, y = 800)
@@ -568,7 +690,7 @@ sp_gumb.place(x = 900, y = 700)
 
 clear = Button(master, text = "Očisti terminal", command = clearTerm, width = 10)
 clear.pack()
-clear.place(x = 1100, y = 750)
+clear.place(x = 1100, y = 810)
 #Terminal
 text = Text(master, width = 85, height = 45, bg = 'gray')
 text.pack()
@@ -576,11 +698,11 @@ text.place(x = 1100, y = 0)
 
 commandline = Entry(master, width = 75, bg = 'gray')
 commandline.pack()
-commandline.place(x = 1100, y = 730)
+commandline.place(x = 1100, y = 780)
 
 command_gumb = Button(master, text = "Enter", width = 6, command = ispisListe)
 command_gumb.pack()
-command_gumb.place(x = 1715, y = 725)
+command_gumb.place(x = 1715, y = 775)
 master.mainloop()
 
 
