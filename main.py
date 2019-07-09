@@ -190,6 +190,7 @@ class DistantnaZastita(Zastita):
         self.treci_stupanj_isključenje = False
         self.cetvrti_stupanj_isključenje = False
         self.uredaj_kvar = False
+        self.TK_signal_iskljucenje = False
 
     def ispis_svih(self): 
         text.insert(INSERT, "DISTANTNA ZASTITA\n")
@@ -211,6 +212,19 @@ class DistantnaZastita(Zastita):
         text.insert(INSERT, "4.stupanj - isključenje     prestanak\n")
         text.insert(INSERT, "uređaj - kvar     prorada\n")
         text.insert(INSERT, "uređaj - kvar     prestanak\n\n\n")
+
+    def ispis_grupnih(self): 
+        text.insert(INSERT, "DISTANTNA ZASTITA\n")
+        text.insert(INSERT, "isključenje     prorada\n")
+        text.insert(INSERT, "isključenje     prestanak\n")
+        text.insert(INSERT, "2.stupanj - isključenje     prorada\n")
+        text.insert(INSERT, "2.stupanj - isključenje     prestanak\n")
+        text.insert(INSERT, "3.stupanj - isključenje     prorada\n")
+        text.insert(INSERT, "3.stupanj - isključenje     prestanak\n")
+        text.insert(INSERT, "4.stupanj - isključenje     prorada\n")
+        text.insert(INSERT, "4.stupanj - isključenje     prestanak\n")
+        text.insert(INSERT, "TK signal - isključenje     prorada\n")
+        text.insert(INSERT, "TK signal - isključenje     prestanak\n")
 
 
 
@@ -604,8 +618,32 @@ def ispisListe():
         text.insert(INSERT, "Lista trenutnih signala za prekidac dalekovodnog polja\n\n\n")
         text.insert(INSERT, "DALEKOVODNO POLJE\n")        
         SpojnoPolje.prekidac.ispis()
+    elif (input == "grupni - sve"):
+        text.insert(INSERT, "Lista svih grupnih signala za dalekovodnog polja\n\n\n")
+        text.insert(INSERT, "DALEKOVODNO POLJE\n")        
+        DalekovodnoPolje.DistantnaZastita.ispis_grupnih()
+    elif (input == "help"):
+        text.insert(INSERT, "Lista svig naredbi za terminal\n\n\n")
+        text.insert(INSERT, "sve\n")
+        text.insert(INSERT, "dalekovodno - sve\n")
+        text.insert(INSERT, "spojno - sve\n")
+        text.insert(INSERT, "trenutni\n")
+        text.insert(INSERT, "dalekovodno - trenutni\n")
+        text.insert(INSERT, "spojno - trenutni\n")
+        text.insert(INSERT, "dalekovodno - prekidac - sve\n")
+        text.insert(INSERT, "dalekovodno - rastavljac - sve\n")
+        text.insert(INSERT, "dalekovodno - rastavljac1 - trenutni\n")
+        text.insert(INSERT, "dalekovodno - rastavljac2 - trenutni\n")
+        text.insert(INSERT, "dalekovodno - prekidac - trenutni\n")
+        text.insert(INSERT, "spojno - prekidac - sve\n")
+        text.insert(INSERT, "spojno - rastavljac - sve\n")
+        text.insert(INSERT, "spojno - rastavljac1 - trenutni\n")
+        text.insert(INSERT, "spojno - rastavljac2 - trenutni\n")
+        text.insert(INSERT, "spojno - prekidac - trenutni\n")
+        text.insert(INSERT, "grupni - sve\n")   
     else:
         text.insert(INSERT, "Kriva ključna riječ\n")
+        text.insert(INSERT, "Upisite help za listu naredbi\n")
         
     
     
@@ -734,7 +772,7 @@ napajanje_label.pack()
 napajanje_label.place(x = 600, y = 780)
 
 CheckVar3 = IntVar()
-c3 = Checkbutton(master, text = "On/OFF", variable = CheckVar3, onvalue = 1, offvalue = 0, height=1, width = 6, command = Napajanje.postaviNapajanje)
+c3 = Checkbutton(master, text = "On/OFF", variable = CheckVar3, onvalue = 0, offvalue = 1, height=1, width = 6, command = Napajanje.postaviNapajanje)
 c3.pack()
 c3.place(x = 600, y = 800)
 
@@ -806,6 +844,11 @@ commandline.place(x = 1100, y = 780)
 command_gumb = Button(master, text = "Enter", width = 6, command = ispisListe)
 command_gumb.pack()
 command_gumb.place(x = 1715, y = 775)
+
+sp_gumb = Button(master, text = "On/Off", command = SpojnoPolje.ukljuci_iskljuci,width = 10)
+sp_gumb.pack()
+sp_gumb.place(x = 900, y = 700)
+
 master.mainloop()
 
 
