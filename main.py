@@ -75,11 +75,11 @@ class Prekidac:
         return self.stanje
 
     def iskljuci(self):
-        text.insert(INSERT,  "Isključujem Prekidač...\n")
+        text.insert(INSERT,  "Isključujem Prekidač\n")
         self.stanje = False
 
     def ukljuci(self):
-        text.insert(INSERT,  "Uključujem Prekidač...\n")
+        text.insert(INSERT,  "Uključujem Prekidač\n")
         self.stanje = True
 
 
@@ -93,11 +93,11 @@ class Rastavljac:
         return self.stanje
 
     def iskljuci(self):
-        text.insert(INSERT,  "Isključujem Rastavljač " + self.name + "...\n")
+        text.insert(INSERT,  "Isključujem Rastavljač " + self.name + "\n")
         self.stanje = False
 
     def ukljuci(self):
-        text.insert(INSERT,  "Uključujem Rastavljač " + self.name + "...\n")
+        text.insert(INSERT,  "Uključujem Rastavljač " + self.name + "\n")
         self.stanje = True
 
     def ispis_svih(self):
@@ -164,20 +164,20 @@ class Zastita():
         if (CheckVar1.get() == 1 ):
             if (DalekovodnoPolje.odrediStanje() == True):
                 DalekovodnoPolje.kojaSab()
-            text.insert(INSERT,  "Uključujem Nadstrujnu Zaštitu...\n")
+            text.insert(INSERT,  "Uključujem Nadstrujnu Zaštitu\n")
             self.ukljuci()
         else:
-            text.insert(INSERT,  "Isključujem Nadstrujnu Zaštitu...\n")
+            text.insert(INSERT,  "Isključujem Nadstrujnu Zaštitu\n")
             self.iskljuci()
 
     def postaviZastituDis(self):
         if (CheckVar2.get() == 1 ):
             if (DalekovodnoPolje.odrediStanje() == True):
                 DalekovodnoPolje.kojaSab()
-            text.insert(INSERT,  "Uključujem Distantnu Zaštitu...\n")
+            text.insert(INSERT,  "Uključujem Distantnu Zaštitu\n")
             self.ukljuci()
         else:
-            text.insert(INSERT,  "Isključujem Distantnu Zaštitu...\n")
+            text.insert(INSERT,  "Isključujem Distantnu Zaštitu\n")
             self.iskljuci()      
 
 class DistantnaZastita(Zastita):
@@ -268,11 +268,11 @@ class APU:
         return self.stanje
 
     def iskljuci(self):
-        text.insert(INSERT,  "Isključujem APU...\n")
+        text.insert(INSERT,  "Isključujem APU\n")
         self.stanje = False
 
     def ukljuci(self):
-        text.insert(INSERT,  "Uključujem APU...\n")
+        text.insert(INSERT,  "Uključujem APU\n")
         self.stanje = True
 
 
@@ -310,7 +310,7 @@ class SPPolje(Polje):
 
     def ukljuci_iskljuci(self):
         if (Napajanje.napajanje == False):
-            text.insert(INSERT,  "Upalite napajanje...\n")
+            text.insert(INSERT,  "Upalite napajanje\n")
             return
         if(self.prekidac.odrediStanje() == False):
             text.insert(INSERT,  "UKLJUČUJEM SPOJNO POLJE...\n")
@@ -343,14 +343,18 @@ class SPPolje(Polje):
     def onoffprekidac(self, nes):
         if (self.prekidac.stanje == False):
             self.prekidac.ukljuci()
+            if (self.rastavljacSab1.stanje == True and self.rastavljacSab2.stanje == True):
+                self.stanje = True
+                text.insert(INSERT,  "SPOJNO POLJE UKLJUČENO...\n")
             can.itemconfigure(s_prekidac, fill = 'green')
         else:
             self.prekidac.iskljuci()
+            self.stanje = False
             can.itemconfigure(s_prekidac, fill = 'black')
 
     def onoffrastavljacSab1(self, nes):
         if (self.prekidac.stanje == True):
-            text.insert(INSERT, "Ne moguce upravljati rastavljačem zbog uključenog prekidača...\n")
+            text.insert(INSERT, "Ne moguce upravljati rastavljačem zbog uključenog prekidača\n")
             return
         if (self.rastavljacSab1.stanje == False):
             self.rastavljacSab1.ukljuci()
@@ -365,7 +369,7 @@ class SPPolje(Polje):
         
     def onoffrastavljacSab2(self, nes):
         if (self.prekidac.stanje == True):
-            text.insert(INSERT, "Ne moguce upravljati rastavljačem zbog uključenog prekidača...\n")
+            text.insert(INSERT, "Ne moguce upravljati rastavljačem zbog uključenog prekidača\n")
             return
         if (self.rastavljacSab2.stanje == False):
             self.rastavljacSab2.ukljuci()
@@ -393,7 +397,7 @@ class DPPolje(Polje):
 
 
     def ukljuci_iskljuciS1(self):
-        if(self.prekidac.odrediStanje() == False and self.rastavljacSab1.odrediStanje() == False and self.rastavljacUzemljenja.odrediStanje() == True and self.rastavljacIzlazni.odrediStanje() == False):
+        if(self.prekidac.odrediStanje() == False and self.rastavljacUzemljenja.odrediStanje() == True):
             text.insert(INSERT,  "UKLJUČUJEM DALEKOVODNO POLJE...\n")
             self.rastavljacUzemljenja.iskljuci()
             self.rastavljacSab1.ukljuci()
@@ -437,7 +441,7 @@ class DPPolje(Polje):
             text.insert(INSERT,  "DALEKOVODNO POLJE ISKLJUČENO...\n")
         return
     def ukljuci_iskljuciS2(self):
-        if(self.prekidac.odrediStanje() == False and self.rastavljacSab2.odrediStanje() == False and self.rastavljacUzemljenja.odrediStanje() == True and self.rastavljacIzlazni.odrediStanje() == False):
+        if(self.prekidac.odrediStanje() == False  and self.rastavljacUzemljenja.odrediStanje() == True):
             text.insert(INSERT,  "UKLJUČUJEM DALEKOVODNO POLJE...\n")
             self.rastavljacUzemljenja.iskljuci()
             self.rastavljacSab2.ukljuci()
@@ -483,7 +487,7 @@ class DPPolje(Polje):
         unos2.delete(1.0,END)
         unos3.delete(1.0,END)
         if (Napajanje.napajanje == False):
-            text.insert(INSERT,  "Upalite napajanje...\n")
+            text.insert(INSERT,  "Upalite napajanje\n")
             return
         if (DalekovodnoPolje.DistantnaZastita.odrediStanje() == True):
             text.insert(INSERT,  "Nemoguće upravljati uređajem dok radi distantna zaštita\n")
@@ -500,13 +504,13 @@ class DPPolje(Polje):
     def prebaci(self):
        
         if (Napajanje.napajanje == False):
-            text.insert(INSERT,  "Upalite napajanje...\n")
+            text.insert(INSERT,  "Upalite napajanje\n")
             return
         if (self.odrediStanje() == False):
-            text.insert(INSERT, "Upalite dalekovodno polje...\n")
+            text.insert(INSERT, "Upalite dalekovodno polje\n")
             return
         if (SpojnoPolje.odrediStanje() == False):
-            text.insert(INSERT,  "Upalite spojno polje...\n")
+            text.insert(INSERT,  "Upalite spojno polje\n")
             return
         if (self.sabirnica == 'S1'):
             text.insert(INSERT, "PREBACUJEM DALEKOVODNO POLJE NA S2...\n")
@@ -528,6 +532,142 @@ class DPPolje(Polje):
             text.insert(INSERT, "DALEKOVODNO POLJE PREBAČENO NA S1...\n")
 
 
+    def onoffprekidac(self, nes):
+        if (Napajanje.napajanje == False):
+            text.insert(INSERT,  "Nemoguće upravljati uređajem dok je napajanje isključeno\n")
+            return
+        if (DalekovodnoPolje.DistantnaZastita.odrediStanje() == True):
+            text.insert(INSERT,  "Nemoguće upravljati uređajem dok radi distantna zaštita\n")
+            return
+        if (DalekovodnoPolje.NadstrujnaZastita.odrediStanje() == True):
+            text.insert(INSERT,  "Nemoguće upravljati uređajem dok radi nadstrujna zaštita\n")
+            return
+        if (self.prekidac.stanje == False):
+            self.APU.ukljuci()
+            self.prekidac.ukljuci()
+            if ((self.rastavljacSab1.stanje == True or self.rastavljacSab2.stanje == True) and self.rastavljacIzlazni.stanje == True):
+                self.stanje = True
+                text.insert(INSERT,  "DALEKOVODNO POLJE UKLJUČENO...\n")
+            can.itemconfigure(d_prekidac, fill = 'green')
+        else:
+            self.APU.iskljuci()
+            self.prekidac.iskljuci()
+            self.stanje = False
+            can.itemconfigure(d_prekidac, fill = 'black')
+
+    def onoffrastavljac1(self,nes):
+        if (Napajanje.napajanje == False):
+            text.insert(INSERT,  "Nemoguće upravljati uređajem dok je napajanje isključeno\n")
+            return
+        if (DalekovodnoPolje.DistantnaZastita.odrediStanje() == True):
+            text.insert(INSERT,  "Nemoguće upravljati uređajem dok radi distantna zaštita\n")
+            return
+        if (DalekovodnoPolje.NadstrujnaZastita.odrediStanje() == True):
+            text.insert(INSERT,  "Nemoguće upravljati uređajem dok radi nadstrujna zaštita\n")
+            return
+        if (self.prekidac.stanje == True):
+            text.insert(INSERT, "Ne moguce upravljati rastavljačem zbog uključenog prekidača\n")
+            return
+        if (self.rastavljacSab2.stanje == True):
+            text.insert(INSERT, "Ne moguce upravljati rastavljačem zbog drugog rastavljača\n")
+            return
+        if (self.rastavljacSab1.stanje == False):
+            self.rastavljacSab1.ukljuci()
+            
+            self.sabirnica = 'S1'
+            can.itemconfigure(d_rastavljac1, fill = 'green')
+            can.itemconfigure(s1_con, fill = 'green')
+            can.itemconfigure(s1_path, fill = 'green')
+        else:
+            self.rastavljacSab1.iskljuci()
+            can.itemconfigure(d_rastavljac1, fill = 'black')
+            can.itemconfigure(s1_con, fill = 'red')
+            can.itemconfigure(s1_path, fill = 'red')
+
+
+    def onoffrastavljac2(self,nes):
+        if (Napajanje.napajanje == False):
+            text.insert(INSERT,  "Nemoguće upravljati uređajem dok je napajanje isključeno\n")
+            return
+        if (DalekovodnoPolje.DistantnaZastita.odrediStanje() == True):
+            text.insert(INSERT,  "Nemoguće upravljati uređajem dok radi distantna zaštita\n")
+            return
+        if (DalekovodnoPolje.NadstrujnaZastita.odrediStanje() == True):
+            text.insert(INSERT,  "Nemoguće upravljati uređajem dok radi nadstrujna zaštita\n")
+            return
+        if (self.prekidac.stanje == True):
+            text.insert(INSERT, "Ne moguce upravljati rastavljačem zbog uključenog prekidača\n")
+            return
+        if (self.rastavljacSab1.stanje == True):
+            text.insert(INSERT, "Ne moguce upravljati rastavljačem zbog drugog rastavljača\n")
+            return
+        if (self.rastavljacSab2.stanje == False):
+            self.rastavljacSab2.ukljuci()
+            self.sabirnica = 'S2'
+            can.itemconfigure(d_rastavljac2, fill = 'green')
+            can.itemconfigure(s2_path, fill = 'green')
+        else:
+            self.rastavljacSab2.iskljuci()
+            can.itemconfigure(d_rastavljac2, fill = 'black')
+            can.itemconfigure(s2_path, fill = 'red')
+
+
+    def onoffizlazni(self,nes):
+        if (Napajanje.napajanje == False):
+            text.insert(INSERT,  "Nemoguće upravljati uređajem dok je napajanje isključeno\n")
+            return
+        if (DalekovodnoPolje.DistantnaZastita.odrediStanje() == True):
+            text.insert(INSERT,  "Nemoguće upravljati uređajem dok radi distantna zaštita\n")
+            return
+        if (DalekovodnoPolje.NadstrujnaZastita.odrediStanje() == True):
+            text.insert(INSERT,  "Nemoguće upravljati uređajem dok radi nadstrujna zaštita\n")
+            return
+        if (self.prekidac.stanje == True):
+            text.insert(INSERT, "Ne moguce upravljati rastavljačem zbog uključenog prekidača\n")
+            return
+        if (self.rastavljacUzemljenja.stanje == True):
+            text.insert(INSERT, "Ne moguce upravljati rastavljačem zbog drugog rastavljača\n")
+            return
+        if (self.rastavljacIzlazni.stanje == False):
+            self.rastavljacIzlazni.ukljuci()
+            can.itemconfigure(d_izlazni, fill = 'green')
+            can.itemconfigure(main_path, fill = 'green')
+        else:
+            self.rastavljacIzlazni.iskljuci()
+            can.itemconfigure(d_izlazni, fill = 'black')
+            can.itemconfigure(main_path, fill = 'red')
+        
+    def onoffuzemljenje(self,nes):
+        if (Napajanje.napajanje == False):
+            text.insert(INSERT,  "Nemoguće upravljati uređajem dok je napajanje isključeno\n")
+            return
+        if (DalekovodnoPolje.DistantnaZastita.odrediStanje() == True):
+            text.insert(INSERT,  "Nemoguće upravljati uređajem dok radi distantna zaštita\n")
+            return
+        if (DalekovodnoPolje.NadstrujnaZastita.odrediStanje() == True):
+            text.insert(INSERT,  "Nemoguće upravljati uređajem dok radi nadstrujna zaštita\n")
+            return
+        if (self.prekidac.stanje == True):
+            text.insert(INSERT, "Ne moguce upravljati rastavljačem zbog uključenog prekidača\n")
+            return
+        if (self.rastavljacIzlazni.stanje == True):
+            text.insert(INSERT, "Ne moguce upravljati rastavljačem zbog drugog rastavljača\n")
+            return
+        if (self.rastavljacUzemljenja.stanje == False):
+            self.rastavljacUzemljenja.ukljuci()
+            can.itemconfigure(d_uzemljenje, fill = 'green')
+            can.itemconfigure(path, fill = 'green')
+            can.itemconfigure(box1, fill = 'green')
+            can.itemconfigure(box2, fill = 'green')
+            can.itemconfigure(box3, fill = 'green')
+        else:
+            self.rastavljacUzemljenja.iskljuci()
+            can.itemconfigure(d_uzemljenje, fill = 'black')
+            can.itemconfigure(path, fill = 'red')
+            can.itemconfigure(box1, fill = 'red')
+            can.itemconfigure(box2, fill = 'red')
+            can.itemconfigure(box3, fill = 'red')
+    
 class Napajanje() :
     def __init__(self):
         self.napajanje = True
@@ -540,14 +680,14 @@ class Napajanje() :
     def postaviNapajanje(self):
         if (CheckVar3.get() == 0):
             self.ukljuci_napajanje()
-            text.insert(INSERT,  "Uključujem napajanje...\n")
+            text.insert(INSERT,  "Uključujem napajanje\n")
         else:
             if (DalekovodnoPolje.odrediStanje() == True):
                 DalekovodnoPolje.kojaSab()
             if (SpojnoPolje.odrediStanje() == True):
                 SpojnoPolje.ukljuci_iskljuci()
             self.iskljuci_napajanje()
-            text.insert(INSERT,  "Isključujem napajanje...\n")
+            text.insert(INSERT,  "Isključujem napajanje\n")
 
 
 def clearTerm():
@@ -715,10 +855,15 @@ box3 = can.create_rectangle(25, 570, 45, 610, fill = 'red')
 main_path = can.create_rectangle(250, 230, 270, 600, fill = 'green')
 
 d_rastavljac1 = can.create_rectangle(80, 150, 140, 170, fill = 'green')
+can.tag_bind(d_rastavljac1, "<Button-1>", DalekovodnoPolje.onoffrastavljac1)
 d_rastavljac2 = can.create_rectangle(400, 150, 460, 170, fill = 'black')
+can.tag_bind(d_rastavljac2, "<Button-1>", DalekovodnoPolje.onoffrastavljac2)
 d_izlazni = can.create_rectangle(230, 480, 290, 500, fill = 'green')
+can.tag_bind(d_izlazni, "<Button-1>", DalekovodnoPolje.onoffizlazni)
 d_uzemljenje = can.create_rectangle(150, 560, 170, 620, fill = 'black')
+can.tag_bind(d_uzemljenje, "<Button-1>", DalekovodnoPolje.onoffuzemljenje)
 d_prekidac = can.create_rectangle(230, 300, 290, 360, fill = 'green')
+can.tag_bind(d_prekidac, "<Button-1>", DalekovodnoPolje.onoffprekidac)
 
 #Spojno
 
