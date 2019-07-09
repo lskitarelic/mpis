@@ -1,3 +1,4 @@
+
 #!/usr/bin/python
 #23534950
 from tkinter import *
@@ -311,7 +312,7 @@ class SPPolje(Polje):
         if (Napajanje.napajanje == False):
             text.insert(INSERT,  "Upalite napajanje...\n")
             return
-        if(self.prekidac.odrediStanje() == False and self.rastavljacSab1.odrediStanje() == False and self.rastavljacSab2.odrediStanje() == False):
+        if(self.prekidac.odrediStanje() == False):
             text.insert(INSERT,  "UKLJUČUJEM SPOJNO POLJE...\n")
             self.rastavljacSab1.ukljuci()
             self.rastavljacSab2.ukljuci()
@@ -339,6 +340,42 @@ class SPPolje(Polje):
             text.insert(INSERT,  "SPOJNO POLJE ISKLJUČENO...\n")
             return
 
+    def onoffprekidac(self, nes):
+        if (self.prekidac.stanje == False):
+            self.prekidac.ukljuci()
+            can.itemconfigure(s_prekidac, fill = 'green')
+        else:
+            self.prekidac.iskljuci()
+            can.itemconfigure(s_prekidac, fill = 'black')
+
+    def onoffrastavljacSab1(self, nes):
+        if (self.prekidac.stanje == True):
+            text.insert(INSERT, "Ne moguce upravljati rastavljačem zbog uključenog prekidača...\n")
+            return
+        if (self.rastavljacSab1.stanje == False):
+            self.rastavljacSab1.ukljuci()
+            can.itemconfigure(s_rastavljac1, fill = 'green')
+            can.itemconfigure(s1_path2, fill = 'green')
+            can.itemconfigure(s1_con2, fill = 'green')
+        else:
+            self.rastavljacSab1.iskljuci()
+            can.itemconfigure(s_rastavljac1, fill = 'black')
+            can.itemconfigure(s1_path2, fill = 'red')
+            can.itemconfigure(s1_con2, fill = 'red')
+        
+    def onoffrastavljacSab2(self, nes):
+        if (self.prekidac.stanje == True):
+            text.insert(INSERT, "Ne moguce upravljati rastavljačem zbog uključenog prekidača...\n")
+            return
+        if (self.rastavljacSab2.stanje == False):
+            self.rastavljacSab2.ukljuci()
+            can.itemconfigure(s_rastavljac2, fill = 'green')
+            can.itemconfigure(s2_path2, fill = 'green')
+        else:
+            self.rastavljacSab2.iskljuci()
+            can.itemconfigure(s_rastavljac2, fill = 'black')
+            can.itemconfigure(s2_path2, fill = 'red')
+        
 class DPPolje(Polje):
     def __init__(self, naponski_nivo, naziv, stanje, sabirnica, prekidac, rastavljacSab1, rastavljacSab2, rastavljacUzemljenja, rastavljacIzlazni, NadstrujnaZastita, DistantnaZastita, APU, Mjerenja):
         Polje.__init__(self, naponski_nivo, naziv, stanje)
@@ -646,7 +683,6 @@ def ispisListe():
         text.insert(INSERT, "Upisite help za listu naredbi\n")
         
     
-    
 SpojnoPolje = SPPolje(110, "Spojno Polje", False, Prekidac(False), Rastavljac(False, "S1"), Rastavljac(False, "S2"))
 DalekovodnoPolje = DPPolje(110, "Dalekovodno Polje", True, "S1",Prekidac(True), Rastavljac(True, "S1"), Rastavljac(False, "S2"), Rastavljac(False, "Uzemljenja"), Rastavljac(True, "Izlazni"), NadstrujnaZastita(False), DistantnaZastita(False), APU(False), Mjerenja())
 Napajanje = Napajanje();
@@ -669,6 +705,15 @@ s1_path = can.create_polygon(s1_path_points, fill = 'green')
 s2_path_points = [420, 101, 420, 230, 271, 230, 271, 250, 440, 250, 440, 101]
 s2_path = can.create_polygon(s2_path_points, fill = 'red')
 
+#uzemljenje
+path = can.create_rectangle(100,580, 250, 600,fill = 'red')
+box1 = can.create_rectangle(75, 540, 95, 640, fill = 'red')
+box2 = can.create_rectangle(50, 560, 70, 620, fill = 'red')
+box3 = can.create_rectangle(25, 570, 45, 610, fill = 'red')
+
+#izmedu
+main_path = can.create_rectangle(250, 230, 270, 600, fill = 'green')
+
 d_rastavljac1 = can.create_rectangle(80, 150, 140, 170, fill = 'green')
 d_rastavljac2 = can.create_rectangle(400, 150, 460, 170, fill = 'black')
 d_izlazni = can.create_rectangle(230, 480, 290, 500, fill = 'green')
@@ -676,10 +721,6 @@ d_uzemljenje = can.create_rectangle(150, 560, 170, 620, fill = 'black')
 d_prekidac = can.create_rectangle(230, 300, 290, 360, fill = 'green')
 
 #Spojno
-
-s_rastavljac1 = can.create_rectangle(580, 150, 640, 170, fill = 'black')
-s_rastavljac2 = can.create_rectangle(900, 150, 960, 170, fill = 'black')
-s_prekidac = can.create_rectangle(740, 210, 800, 270, fill = 'black')
 
 s1_con_points2 = [600, 51, 600, 80, 620, 80, 620, 51]
 s1_con2 = can.create_polygon(s1_con_points2, fill = 'red')
@@ -690,14 +731,16 @@ s1_path2 = can.create_polygon(s1_path_points2, fill = 'red')
 s2_path_points2 = [920, 101, 940, 100, 940, 250, 790, 250, 790, 230, 920, 230]
 s2_path2 = can.create_polygon(s2_path_points2, fill = 'red')
 
-#izmedu
-main_path = can.create_rectangle(250, 230, 270, 600, fill = 'green')
+s_rastavljac1 = can.create_rectangle(580, 150, 640, 170, fill = 'black')
+can.tag_bind(s_rastavljac1, "<Button-1>", SpojnoPolje.onoffrastavljacSab1)
+s_rastavljac2 = can.create_rectangle(900, 150, 960, 170, fill = 'black')
+can.tag_bind(s_rastavljac2, "<Button-1>", SpojnoPolje.onoffrastavljacSab2)
+s_prekidac = can.create_rectangle(740, 210, 800, 270, fill = 'black')
+can.tag_bind(s_prekidac, "<Button-1>", SpojnoPolje.onoffprekidac)
 
-#uzemljenje
-path = can.create_rectangle(100,580, 250, 600,fill = 'red')
-box1 = can.create_rectangle(75, 540, 95, 640, fill = 'red')
-box2 = can.create_rectangle(50, 560, 70, 620, fill = 'red')
-box3 = can.create_rectangle(25, 570, 45, 610, fill = 'red')
+
+
+
 
 can.pack()
 #Labeli
