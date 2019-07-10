@@ -123,6 +123,9 @@ class Mjerenja:
         self.JT = "2500.0 kVArh"
            
     def ukljuci(self):
+        unos1.delete(1.0,END)
+        unos2.delete(1.0,END)
+        unos3.delete(1.0,END)
         self.U = "10.5 MW"
         self.Q = "-5.0 HZ"
         self.JT = "2500.0 kVArh"
@@ -131,6 +134,9 @@ class Mjerenja:
         unos3.insert(INSERT,  self.JT)
     
     def iskljuci(self):
+        unos1.delete(1.0,END)
+        unos2.delete(1.0,END)
+        unos3.delete(1.0,END)
         self.U = "0.0 MW"
         self.Q = "0.0 HZ"
         self.JT = "2500.0 kVArh"
@@ -521,9 +527,6 @@ class DPPolje(Polje):
             text.insert(INSERT,  "DALEKOVODNO POLJE ISKLJUČENO...\n")
         return
     def kojaSab(self):
-        unos1.delete(1.0,END)
-        unos2.delete(1.0,END)
-        unos3.delete(1.0,END)
         if (Napajanje.napajanje == False):
             text.insert(INSERT,  "Upalite napajanje\n")
             return
@@ -583,6 +586,7 @@ class DPPolje(Polje):
         if (self.prekidac.stanje == False):
             self.APU.ukljuci()
             self.prekidac.ukljuci()
+            self.Mjerenja.ukljuci()
             if ((self.rastavljacSab1.stanje == True or self.rastavljacSab2.stanje == True) and self.rastavljacIzlazni.stanje == True):
                 self.stanje = True
                 text.insert(INSERT,  "DALEKOVODNO POLJE UKLJUČENO...\n")
@@ -590,6 +594,7 @@ class DPPolje(Polje):
         else:
             self.APU.iskljuci()
             self.prekidac.iskljuci()
+            self.Mjerenja.iskljuci()
             self.stanje = False
             can.itemconfigure(d_prekidac, fill = 'black')
 
