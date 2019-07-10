@@ -165,9 +165,21 @@ class Zastita():
             if (DalekovodnoPolje.odrediStanje() == True):
                 DalekovodnoPolje.kojaSab()
             text.insert(INSERT,  "Uključujem Nadstrujnu Zaštitu\n")
+            text.insert(INSERT, "NPČ - isključenje     prorada\n")
+            text.insert(INSERT, "VPČ isključenje     prorada\n")
+            text.insert(INSERT, "zemljospojna isključenje     prorada\n")
+            text.insert(INSERT, "od preopterećenja upozorenje     prorada\n")
+            text.insert(INSERT, "od preopterećenja isključenje     prorada\n")
+            text.insert(INSERT, "relej - kvar     prorada\n")
             self.ukljuci()
         else:
             text.insert(INSERT,  "Isključujem Nadstrujnu Zaštitu\n")
+            text.insert(INSERT, "NPČ - isključenje     prestanak\n")
+            text.insert(INSERT, "VPČ isključenje     prestanak\n")
+            text.insert(INSERT, "zemljospojna isključenje     prestanak\n")
+            text.insert(INSERT, "od preopterećenja upozorenje     prestanak\n")
+            text.insert(INSERT, "od preopterećenja isključenje     prestanak\n")
+            text.insert(INSERT, "relej - kvar     prestanak\n")
             self.iskljuci()
 
     def postaviZastituDis(self):
@@ -176,8 +188,28 @@ class Zastita():
                 DalekovodnoPolje.kojaSab()
             text.insert(INSERT,  "Uključujem Distantnu Zaštitu\n")
             self.ukljuci()
+            text.insert(INSERT, "isključenje     prorada\n")
+            text.insert(INSERT, "faza L1 poticaj     prorada\n")
+            text.insert(INSERT, "faza L2 poticaj     prorada\n")
+            text.insert(INSERT, "faza L3 poticaj     prorada\n")
+            text.insert(INSERT, "zemljospoj poticaj     prorada\n")
+            text.insert(INSERT, "2.stupanj - isključenje     prorada\n")     
+            text.insert(INSERT, "3.stupanj - isključenje     prorada\n")
+            text.insert(INSERT, "4.stupanj - isključenje     prorada\n")
+            text.insert(INSERT, "TK signal - isključenje     prorada\n")
+            text.insert(INSERT, "uređaj - kvar     prorada\n")
         else:
             text.insert(INSERT,  "Isključujem Distantnu Zaštitu\n")
+            text.insert(INSERT, "isključenje     prestanak\n")
+            text.insert(INSERT, "faza L1 poticaj     prestanak\n")
+            text.insert(INSERT, "faza L2 poticaj     prestanak\n")
+            text.insert(INSERT, "faza L3 poticaj     prestanak\n")
+            text.insert(INSERT, "zemljospoj poticaj     prestanak\n")
+            text.insert(INSERT, "2.stupanj - isključenje     prestanak\n")     
+            text.insert(INSERT, "3.stupanj - isključenje     prestanak\n")
+            text.insert(INSERT, "4.stupanj - isključenje     prestanak\n")
+            text.insert(INSERT, "TK signal - isključenje     prestanak\n")
+            text.insert(INSERT, "uređaj - kvar     prestanak\n")
             self.iskljuci()      
 
 class DistantnaZastita(Zastita):
@@ -192,6 +224,7 @@ class DistantnaZastita(Zastita):
         self.cetvrti_stupanj_isključenje = False
         self.uredaj_kvar = False
         self.TK_signal_iskljucenje = False
+
 
     def ispis_svih(self): 
         text.insert(INSERT, "DISTANTNA ZASTITA\n")
@@ -211,6 +244,8 @@ class DistantnaZastita(Zastita):
         text.insert(INSERT, "3.stupanj - isključenje     prestanak\n")
         text.insert(INSERT, "4.stupanj - isključenje     prorada\n")
         text.insert(INSERT, "4.stupanj - isključenje     prestanak\n")
+        text.insert(INSERT, "TK signal - isključenje     prorada\n")
+        text.insert(INSERT, "TK signal - isključenje     prestanak\n")
         text.insert(INSERT, "uređaj - kvar     prorada\n")
         text.insert(INSERT, "uređaj - kvar     prestanak\n\n\n")
 
@@ -341,6 +376,9 @@ class SPPolje(Polje):
             return
 
     def onoffprekidac(self, nes):
+        if (Napajanje.napajanje == False):
+            text.insert(INSERT,  "Upalite napajanje\n")
+            return
         if (self.prekidac.stanje == False):
             self.prekidac.ukljuci()
             if (self.rastavljacSab1.stanje == True and self.rastavljacSab2.stanje == True):
@@ -646,9 +684,6 @@ class DPPolje(Polje):
             return
         if (DalekovodnoPolje.NadstrujnaZastita.odrediStanje() == True):
             text.insert(INSERT,  "Nemoguće upravljati uređajem dok radi nadstrujna zaštita\n")
-            return
-        if (self.prekidac.stanje == True):
-            text.insert(INSERT, "Ne moguce upravljati rastavljačem zbog uključenog prekidača\n")
             return
         if (self.rastavljacIzlazni.stanje == True):
             text.insert(INSERT, "Ne moguce upravljati rastavljačem zbog drugog rastavljača\n")
