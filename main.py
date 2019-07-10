@@ -435,7 +435,7 @@ class DPPolje(Polje):
 
 
     def ukljuci_iskljuciS1(self):
-        if(self.prekidac.odrediStanje() == False and self.rastavljacUzemljenja.odrediStanje() == True):
+        if(self.prekidac.odrediStanje() == False):
             text.insert(INSERT,  "UKLJUČUJEM DALEKOVODNO POLJE...\n")
             self.rastavljacUzemljenja.iskljuci()
             self.rastavljacSab1.ukljuci()
@@ -479,7 +479,7 @@ class DPPolje(Polje):
             text.insert(INSERT,  "DALEKOVODNO POLJE ISKLJUČENO...\n")
         return
     def ukljuci_iskljuciS2(self):
-        if(self.prekidac.odrediStanje() == False  and self.rastavljacUzemljenja.odrediStanje() == True):
+        if(self.prekidac.odrediStanje() == False):
             text.insert(INSERT,  "UKLJUČUJEM DALEKOVODNO POLJE...\n")
             self.rastavljacUzemljenja.iskljuci()
             self.rastavljacSab2.ukljuci()
