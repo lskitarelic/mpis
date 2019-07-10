@@ -216,16 +216,16 @@ class DistantnaZastita(Zastita):
 
     def ispis_grupnih(self): 
         text.insert(INSERT, "DISTANTNA ZASTITA\n")
-        text.insert(INSERT, "isključenje     prorada\n")
-        text.insert(INSERT, "isključenje     prestanak\n")
-        text.insert(INSERT, "2.stupanj - isključenje     prorada\n")
-        text.insert(INSERT, "2.stupanj - isključenje     prestanak\n")
-        text.insert(INSERT, "3.stupanj - isključenje     prorada\n")
-        text.insert(INSERT, "3.stupanj - isključenje     prestanak\n")
-        text.insert(INSERT, "4.stupanj - isključenje     prorada\n")
-        text.insert(INSERT, "4.stupanj - isključenje     prestanak\n")
-        text.insert(INSERT, "TK signal - isključenje     prorada\n")
-        text.insert(INSERT, "TK signal - isključenje     prestanak\n")
+        text.insert(INSERT, "isključenje     prorada      1505.1\n")
+        text.insert(INSERT, "isključenje     prestanak      1505.2\n")
+        text.insert(INSERT, "2.stupanj - isključenje     prorada      1505.1\n")
+        text.insert(INSERT, "2.stupanj - isključenje     prestanak      1505.2\n")
+        text.insert(INSERT, "3.stupanj - isključenje     prorada      1505.1\n")
+        text.insert(INSERT, "3.stupanj - isključenje     prestanak      1505.2\n")
+        text.insert(INSERT, "4.stupanj - isključenje     prorada      1505.1\n")
+        text.insert(INSERT, "4.stupanj - isključenje     prestanak      1505.2\n")
+        text.insert(INSERT, "TK signal - isključenje     prorada      1505.1\n")
+        text.insert(INSERT, "TK signal - isključenje     prestanak      1505.2\n")
 
 
 
